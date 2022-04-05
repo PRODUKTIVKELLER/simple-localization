@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Produktivkeller.SimpleLocalizations.Excel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +12,8 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 
         public Language CurrentLanguage => _currentLanguage;
 
-        private Language _currentLanguage;
+        private Language          _currentLanguage;
+        private LanguageDatastore _languageDatastore;
 
         private void Initialize()
         {
@@ -27,6 +29,9 @@ namespace Produktivkeller.SimpleLocalizations.Unity
             {
                 _currentLanguage = Language.EN;
             }
+
+            Dictionary<Language, Dictionary<string, string>> languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
+            _languageDatastore = new LanguageDatastore(languageCache);
         }
 
         public void ChangeLanguage(Language language)
@@ -44,7 +49,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
                 return "???empty???";
             }
 
-            string textWithRichtTextMarkers = LanguageDatastore.GetInstance().ResolveTranslationKey(translationKey, _currentLanguage);
+            string textWithRichtTextMarkers = _languageDatastore.ResolveTranslationKey(translationKey, _currentLanguage);
             return ResolveRichText(textWithRichtTextMarkers);
         }
 

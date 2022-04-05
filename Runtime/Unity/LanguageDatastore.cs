@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalizations.Unity
 {
-    public class LanguageDatastore : MonoBehaviour
+    public class LanguageDatastore
     {
-        private Dictionary<Language, Dictionary<string, string>> _languageCache;
+        private readonly Dictionary<Language, Dictionary<string, string>> _languageCache;
 
-        public void SetLanguageCache(Dictionary<Language, Dictionary<string, string>> languageCache)
+        public LanguageDatastore(Dictionary<Language, Dictionary<string, string>> languageCache)
         {
             _languageCache = languageCache;
         }
@@ -22,44 +22,5 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 
             return "???" + translationKey + "???";
         }
-        
-        #region Singleton
-        
-        private static LanguageDatastore _instance;
-        private void Awake()
-        {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else if (_instance == null)
-            {
-                _instance = this;
-                transform.SetParent(null);
-                DontDestroyOnLoad(this);
-                Initialize();
-            }
-        }
-
-        private void Initialize()
-        {
-            ConfigurationLoader configurationLoader = ConfigurationLoader.GetInstance();
-            if (configurationLoader != null)
-            {
-                // FIXME: Workaround because order of Awake() is undefined:
-                //
-                // LanguageCache is initialized depending on which Awake() is called first:
-                // Awake() in ConfigurationLoader or Awake() in LanguageDatastore
-                
-                _languageCache = configurationLoader.languageCache;
-            }
-        }
-        
-        public static LanguageDatastore GetInstance()
-        {
-            return _instance;
-        }
-
-        #endregion
     }
 }

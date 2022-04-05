@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using ExcelDataReader;
 using Produktivkeller.SimpleLocalizations.Unity;
 using Produktivkeller.SimpleLogging;
@@ -10,13 +9,11 @@ using UnityEngine.Networking;
 
 namespace Produktivkeller.SimpleLocalizations.Excel
 {
-    public class ConfigurationLoader : MonoBehaviour
+    public static class ConfigurationLoader
     {
-        public Dictionary<Language, Dictionary<string, string>> languageCache;
-
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private void Load()
+        public static Dictionary<Language, Dictionary<string, string>> LoadConfigurationAndBuildLanguageCache()
         {
 #if UNITY_EDITOR_OSX
             Log.Debug("Adjusted path to configuration for OS X.");
@@ -31,10 +28,12 @@ namespace Produktivkeller.SimpleLocalizations.Excel
             {
                 if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
                 {
-                    Log.Debug("Could not load file at: {}. Errormessage: {}",     pathToConfiguration, unityWebRequest.error);
+                    Log.Debug("Could not load file at: {}. Errormessage: {}", pathToConfiguration, unityWebRequest.error);
                     break;
                 }
             }
+
+            Dictionary<Language, Dictionary<string, string>> languageCache = new Dictionary<Language, Dictionary<string, string>>();
 
             if (!unityWebRequest.isNetworkError && !unityWebRequest.isHttpError)
             {
@@ -58,49 +57,8 @@ namespace Produktivkeller.SimpleLocalizations.Excel
                     }
                 }
             }
+
+            return languageCache;
         }
-
-        #region Singleton
-
-        private static ConfigurationLoader _instance;
-
-        private void Initialize()
-        {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Load();
-
-            LanguageDatastore languageDatastore = LanguageDatastore.GetInstance();
-            if (languageDatastore != null)
-            {
-                // FIXME: Workaround because order of Awake() is undefined:
-                //
-                // LanguageCache is initialized depending on which Awake() is called first:
-                // Awake() in ConfigurationLoader or Awake() in LanguageDatastore
-
-                LanguageDatastore.GetInstance().SetLanguageCache(languageCache);
-            }
-        }
-
-        private void Awake()
-        {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else if (_instance == null)
-            {
-                _instance = this;
-                transform.SetParent(null);
-                DontDestroyOnLoad(this);
-                Initialize();
-            }
-        }
-
-        public static ConfigurationLoader GetInstance()
-        {
-            return _instance;
-        }
-
-        #endregion
     }
 }
