@@ -1,16 +1,12 @@
 ﻿using TMPro;
 using UnityEngine;
-using Zenject;
 
-namespace _modules._multi_language_support._scripts._unity
+namespace Unity
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class MultiLanguageText : MonoBehaviour, IMultiLanguageSupport
     {
         public string translationKey;
-
-        [Inject]
-        private LanguageService _languageService;
 
         private TextMeshProUGUI _text;
 
@@ -35,11 +31,8 @@ namespace _modules._multi_language_support._scripts._unity
             {
                 _text = GetComponent<TextMeshProUGUI>();
             }
-
-            if (_languageService != null)
-            {
-                _text.text = _languageService.ResolveTranslationKey(translationKey);
-            }
+            
+            _text.text = LanguageService.GetInstance().ResolveTranslationKey(translationKey);
         }
     }
 }

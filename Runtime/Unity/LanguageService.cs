@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
 
-namespace _modules._multi_language_support._scripts._unity
+namespace Unity
 {
-    public class LanguageService
+    public class LanguageService : MonoBehaviour
     {
         private static readonly string PLAYER_PREF_KEY = "language";
 
         public Language CurrentLanguage => _currentLanguage;
 
-        [Inject]
-        private LanguageDatastore _languageDatastore;
-
         private Language _currentLanguage;
 
-        public LanguageService()
+        private void Initialize()
         {
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
@@ -48,7 +44,7 @@ namespace _modules._multi_language_support._scripts._unity
                 return "???empty???";
             }
 
-            string textWithRichtTextMarkers = _languageDatastore.ResolveTranslationKey(translationKey, _currentLanguage);
+            string textWithRichtTextMarkers = LanguageDatastore.GetInstance().ResolveTranslationKey(translationKey, _currentLanguage);
             return ResolveRichText(textWithRichtTextMarkers);
         }
 
@@ -86,5 +82,38 @@ namespace _modules._multi_language_support._scripts._unity
 
             return interfaces;
         }
+        
+        #region Singleton
+
+        private static LanguageService _instance;
+
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else if (_instance == null)
+            {
+                _instance = this;
+                transform.SetParent(null);
+                DontDestroyOnLoad(this);
+            }
+        }
+        
+        private void Start()
+        {
+            if (_instance == null)
+            {
+                Initialize();
+            }
+        }
+
+        public static LanguageService GetInstance()
+        {
+            return _instance;
+        }
+
+        #endregion
     }
 }

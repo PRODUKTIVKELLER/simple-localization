@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using _modules._multi_language_support._scripts._excel;
+using Excel;
+using UnityEngine;
 
-namespace _modules._multi_language_support._scripts._unity
+namespace Unity
 {
-    public class LanguageDatastore
+    public class LanguageDatastore : MonoBehaviour
     {
-        private readonly Dictionary<Language, Dictionary<string, string>> _languageCache;
+        private Dictionary<Language, Dictionary<string, string>> _languageCache;
 
-        public LanguageDatastore(ConfigurationLoader configurationLoader)
+        private void Initialize()
         {
-            _languageCache = configurationLoader.LanguageCache;
+            _languageCache = ConfigurationLoader.GetInstance().languageCache;
         }
 
         public string ResolveTranslationKey(string translationKey, Language language)
@@ -21,5 +22,37 @@ namespace _modules._multi_language_support._scripts._unity
 
             return "???" + translationKey + "???";
         }
+        
+        #region Singleton
+        
+        private static LanguageDatastore _instance;
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else if (_instance == null)
+            {
+                _instance = this;
+                transform.SetParent(null);
+                DontDestroyOnLoad(this);
+            }
+        }
+
+        private void Start()
+        {
+            if (_instance == null)
+            {
+                Initialize();
+            }
+        }
+
+        public static LanguageDatastore GetInstance()
+        {
+            return _instance;
+        }
+
+        #endregion
     }
 }

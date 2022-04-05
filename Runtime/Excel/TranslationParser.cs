@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using _modules._multi_language_support._scripts._unity;
 using ExcelDataReader;
 using Produktivkeller.SimpleLogging;
+using Unity;
 
-namespace _modules._multi_language_support._scripts._excel
+namespace Excel
 {
-    public class TranslationParser : AbstractParser
+    public class TranslationParser
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

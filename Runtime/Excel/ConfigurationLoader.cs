@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
-using _modules._multi_language_support._scripts._unity;
 using ExcelDataReader;
+using Unity;
 using UnityEngine;
 using UnityEngine.Networking;
+using Produktivkeller.SimpleLogging;
 
-namespace _modules._multi_language_support._scripts._excel
+namespace Excel
 {
-    public class ConfigurationLoader
+    public class ConfigurationLoader : MonoBehaviour
     {
-        public Dictionary<Language, Dictionary<string, string>> LanguageCache;
+        public Dictionary<Language, Dictionary<string, string>> languageCache;
 
-        public ConfigurationLoader()
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private void Initialize()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Load();
@@ -21,7 +25,7 @@ namespace _modules._multi_language_support._scripts._excel
         private void Load()
         {
 #if UNITY_EDITOR_OSX
-            Debug.Log("Adjusted path to configuration for Mac");
+            Log.Debug("Adjusted path to configuration for Mac");
             string pathToConfiguration = "File://" +Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
 #else
             string pathToConfiguration = Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
@@ -33,6 +37,8 @@ namespace _modules._multi_language_support._scripts._excel
             {
                 if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
                 {
+                    Log.Debug("There was a problem loading the configuration.xlsx file: {}", unityWebRequest.error);
+                    Log.Debug("Tried to load file at path: {}", pathToConfiguration);
                     break;
                 }
             }
@@ -52,7 +58,7 @@ namespace _modules._multi_language_support._scripts._excel
                             {
                                 TranslationParser translationParser = new TranslationParser();
                                 translationParser.Parse(reader);
-                                LanguageCache = translationParser.RetrieveLanguageCache();
+                                languageCache = translationParser.RetrieveLanguageCache();
                                 break;
                             }
                         } while (reader.NextResult());
@@ -60,5 +66,31 @@ namespace _modules._multi_language_support._scripts._excel
                 }
             }
         }
+
+        #region Singleton
+
+        private static ConfigurationLoader _instance;
+
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else if (_instance == null)
+            {
+                _instance = this;
+                transform.SetParent(null);
+                DontDestroyOnLoad(this);
+                Initialize();
+            }
+        }
+
+        public static ConfigurationLoader GetInstance()
+        {
+            return _instance;
+        }
+
+        #endregion
     }
 }
