@@ -4,6 +4,9 @@
     "displayName": "Simple Translation Solution",
     "description": "Simple Translation Solution is a utility to manage all your translation in one excel file and automatically import them into your unity project.",
     "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-translation-solution",
+    "gitDependencies": {
+        "com.produktivkeller.simple-logging": "https://github.com/PRODUKTIVKELLER/simple-logging.git"
+    },
     "keywords": [
         "translation",
         "translation-solution",
