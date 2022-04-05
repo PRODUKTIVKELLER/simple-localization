@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Produktivkeller.SimpleLocalizations.Unity
 {
-    public class LanguageService : MonoBehaviour
+    public class LocalizationService : MonoBehaviour
     {
         private static readonly string PLAYER_PREF_KEY = "language";
 
@@ -42,44 +42,44 @@ namespace Produktivkeller.SimpleLocalizations.Unity
             InformReceivers();
         }
 
-        public string ResolveTranslationKey(string translationKey)
+        public string ResolveLocalizationKey(string localizationKey)
         {
-            if (translationKey == null || translationKey.Length == 0)
+            if (string.IsNullOrEmpty(localizationKey))
             {
                 return "???empty???";
             }
 
-            string textWithRichtTextMarkers = _languageDatastore.ResolveTranslationKey(translationKey, _currentLanguage);
-            return ResolveRichText(textWithRichtTextMarkers);
+            string textWithRichTextMarkers = _languageDatastore.ResolveLocalizationKey(localizationKey, _currentLanguage);
+            return ResolveRichText(textWithRichTextMarkers);
         }
 
-        private string ResolveRichText(string textWithRichtTextMarkers)
+        private string ResolveRichText(string textWithRichTextMarkers)
         {
-            textWithRichtTextMarkers = textWithRichtTextMarkers.Replace("<1>",  "<color=#FE9E3A>");
-            textWithRichtTextMarkers = textWithRichtTextMarkers.Replace("</1>", "</color>");
+            textWithRichTextMarkers = textWithRichTextMarkers.Replace("<1>",  "<color=#FE9E3A>");
+            textWithRichTextMarkers = textWithRichTextMarkers.Replace("</1>", "</color>");
 
-            textWithRichtTextMarkers = textWithRichtTextMarkers.Replace("<2>",  "<color=#92A512>");
-            textWithRichtTextMarkers = textWithRichtTextMarkers.Replace("</2>", "</color>");
+            textWithRichTextMarkers = textWithRichTextMarkers.Replace("<2>",  "<color=#92A512>");
+            textWithRichTextMarkers = textWithRichTextMarkers.Replace("</2>", "</color>");
 
-            return textWithRichtTextMarkers;
+            return textWithRichTextMarkers;
         }
 
         private void InformReceivers()
         {
-            foreach (IMultiLanguageSupport multiLanguageSupport in FindReceivers())
+            foreach (ILocalizationSupport multiLanguageSupport in FindReceivers())
             {
                 multiLanguageSupport.OnLanguageHasChanged();
             }
         }
 
-        private List<IMultiLanguageSupport> FindReceivers()
+        private List<ILocalizationSupport> FindReceivers()
         {
-            List<IMultiLanguageSupport> interfaces      = new List<IMultiLanguageSupport>();
+            List<ILocalizationSupport> interfaces      = new List<ILocalizationSupport>();
             GameObject[]                rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
             foreach (GameObject rootGameObject in rootGameObjects)
             {
-                IMultiLanguageSupport[] childInterfaces = rootGameObject.GetComponentsInChildren<IMultiLanguageSupport>();
-                foreach (IMultiLanguageSupport childInterface in childInterfaces)
+                ILocalizationSupport[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalizationSupport>();
+                foreach (ILocalizationSupport childInterface in childInterfaces)
                 {
                     interfaces.Add(childInterface);
                 }
@@ -90,7 +90,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 
         #region Singleton
 
-        private static LanguageService _instance;
+        private static LocalizationService _instance;
 
         private void Awake()
         {
@@ -107,7 +107,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
             }
         }
 
-        public static LanguageService GetInstance()
+        public static LocalizationService GetInstance()
         {
             return _instance;
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Produktivkeller.SimpleLocalizations.Unity
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class MultiLanguageText : MonoBehaviour, IMultiLanguageSupport
+    public class LocalizedText : MonoBehaviour, ILocalizationSupport
     {
         public string translationKey;
 
@@ -12,32 +12,32 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 
         private void Start()
         {
-            ResolveTranslation();
+            ResolveLocalization();
         }
 
         private void OnEnable()
         {
-            ResolveTranslation();
+            ResolveLocalization();
         }
 
         public void OnLanguageHasChanged()
         {
-            ResolveTranslation();
+            ResolveLocalization();
         }
 
-        private void ResolveTranslation()
+        private void ResolveLocalization()
         {
             if (_text == null)
             {
                 _text = GetComponent<TextMeshProUGUI>();
             }
 
-            LanguageService languageService = LanguageService.GetInstance();
+            LocalizationService localizationService = LocalizationService.GetInstance();
 
             // Check is required because "OnEnable" can be called before LanguageService is initialized.
-            if (languageService)
+            if (localizationService)
             {
-                _text.text = languageService.ResolveTranslationKey(translationKey);
+                _text.text = localizationService.ResolveLocalizationKey(translationKey);
             }
         }
     }

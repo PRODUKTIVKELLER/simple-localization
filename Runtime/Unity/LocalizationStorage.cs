@@ -13,14 +13,14 @@ namespace Produktivkeller.SimpleLocalizations.Unity
             _languageCache = languageCache;
         }
 
-        public string ResolveTranslationKey(string translationKey, Language language)
+        public string ResolveLocalizationKey(string localizationKey, Language language)
         {
-            if (_languageCache[language].ContainsKey(translationKey))
+            if (_languageCache[language].ContainsKey(localizationKey))
             {
-                return _languageCache[language][translationKey];
+                return _languageCache[language][localizationKey];
             }
 
-            return "???" + translationKey + "???";
+            return "???" + localizationKey + "???";
         }
     }
 }

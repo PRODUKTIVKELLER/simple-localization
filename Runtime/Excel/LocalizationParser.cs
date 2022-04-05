@@ -16,7 +16,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
         {
             InitCache();
             IgnoreHeaderRows(excelDataReader);
-            LoadKeysAndTranslations(excelDataReader);
+            LoadKeysAndLocalizations(excelDataReader);
         }
 
         public Dictionary<Language, Dictionary<string, string>> RetrieveLanguageCache()
@@ -38,7 +38,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
             excelDataReader.Read();
         }
 
-        private void LoadKeysAndTranslations(IExcelDataReader excelDataReader)
+        private void LoadKeysAndLocalizations(IExcelDataReader excelDataReader)
         {
             Log.Debug("Found {} translations in configuration file.", excelDataReader.RowCount);
 
@@ -59,7 +59,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
 
                 if (string.IsNullOrEmpty(german))
                 {
-                    Log.Warn("German translation is missing for key {}.", key);
+                    Log.Warn("German localization is missing for key {}.", key);
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
 
                 if (string.IsNullOrEmpty(english))
                 {
-                    Log.Warn("English translation is missing for key {}.", key);
+                    Log.Warn("English localization is missing for key {}.", key);
                 }
                 else
                 {

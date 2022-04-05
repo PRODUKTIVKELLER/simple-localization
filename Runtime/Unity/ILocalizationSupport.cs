@@ -1,6 +1,6 @@
 ﻿namespace Produktivkeller.SimpleLocalizations.Unity
 {
-    public interface IMultiLanguageSupport
+    public interface ILocalizationSupport
     {
         void OnLanguageHasChanged();
     }
