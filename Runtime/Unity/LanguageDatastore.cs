@@ -8,9 +8,9 @@ namespace Unity
     {
         private Dictionary<Language, Dictionary<string, string>> _languageCache;
 
-        private void Initialize()
+        public void SetLanguageCache(Dictionary<Language, Dictionary<string, string>> languageCache)
         {
-            _languageCache = ConfigurationLoader.GetInstance().languageCache;
+            _languageCache = languageCache;
         }
 
         public string ResolveTranslationKey(string translationKey, Language language)
@@ -37,17 +37,24 @@ namespace Unity
                 _instance = this;
                 transform.SetParent(null);
                 DontDestroyOnLoad(this);
-            }
-        }
-
-        private void Start()
-        {
-            if (_instance == null)
-            {
                 Initialize();
             }
         }
 
+        private void Initialize()
+        {
+            ConfigurationLoader configurationLoader = ConfigurationLoader.GetInstance();
+            if (configurationLoader != null)
+            {
+                // FIXME: Workaround because order of Awake() is undefined:
+                //
+                // LanguageCache is initialized depending on which Awake() is called first:
+                // Awake() in ConfigurationLoader or Awake() in LanguageDatastore
+                
+                _languageCache = configurationLoader.languageCache;
+            }
+        }
+        
         public static LanguageDatastore GetInstance()
         {
             return _instance;

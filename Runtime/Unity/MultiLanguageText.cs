@@ -31,8 +31,14 @@ namespace Unity
             {
                 _text = GetComponent<TextMeshProUGUI>();
             }
-            
-            _text.text = LanguageService.GetInstance().ResolveTranslationKey(translationKey);
+
+            LanguageService languageService = LanguageService.GetInstance();
+
+            // Check is required because "OnEnable" can be called before LanguageService is initialized.
+            if (languageService)
+            {
+                _text.text = languageService.ResolveTranslationKey(translationKey);
+            }
         }
     }
 }

@@ -16,12 +16,6 @@ namespace Excel
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private void Initialize()
-        {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Load();
-        }
-
         private void Load()
         {
 #if UNITY_EDITOR_OSX
@@ -38,7 +32,7 @@ namespace Excel
                 if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
                 {
                     Log.Debug("There was a problem loading the configuration.xlsx file: {}", unityWebRequest.error);
-                    Log.Debug("Tried to load file at path: {}", pathToConfiguration);
+                    Log.Debug("Tried to load file at path: {}",                              pathToConfiguration);
                     break;
                 }
             }
@@ -70,6 +64,23 @@ namespace Excel
         #region Singleton
 
         private static ConfigurationLoader _instance;
+
+        private void Initialize()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Load();
+
+            LanguageDatastore languageDatastore = LanguageDatastore.GetInstance();
+            if (languageDatastore != null)
+            {
+                // FIXME: Workaround because order of Awake() is undefined:
+                //
+                // LanguageCache is initialized depending on which Awake() is called first:
+                // Awake() in ConfigurationLoader or Awake() in LanguageDatastore
+
+                LanguageDatastore.GetInstance().SetLanguageCache(languageCache);
+            }
+        }
 
         private void Awake()
         {

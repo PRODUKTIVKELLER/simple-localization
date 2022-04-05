@@ -17,7 +17,7 @@ namespace Unity
         {
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
-                _currentLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString(PLAYER_PREF_KEY));
+                _currentLanguage = (Language) Enum.Parse(typeof(Language), PlayerPrefs.GetString(PLAYER_PREF_KEY));
             }
             else if (Application.systemLanguage == SystemLanguage.German)
             {
@@ -82,7 +82,7 @@ namespace Unity
 
             return interfaces;
         }
-        
+
         #region Singleton
 
         private static LanguageService _instance;
@@ -98,13 +98,6 @@ namespace Unity
                 _instance = this;
                 transform.SetParent(null);
                 DontDestroyOnLoad(this);
-            }
-        }
-        
-        private void Start()
-        {
-            if (_instance == null)
-            {
                 Initialize();
             }
         }
