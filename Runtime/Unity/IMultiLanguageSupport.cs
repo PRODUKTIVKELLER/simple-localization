@@ -1,4 +1,4 @@
-﻿namespace Unity
+﻿namespace Produktivkeller.SimpleLocalizations.Unity
 {
     public interface IMultiLanguageSupport
     {

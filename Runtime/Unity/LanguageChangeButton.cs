@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Unity;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity
+namespace Produktivkeller.SimpleLocalizations.Unity
 {
     [RequireComponent(typeof(Button))]
     public class LanguageChangeButton : MonoBehaviour, IMultiLanguageSupport

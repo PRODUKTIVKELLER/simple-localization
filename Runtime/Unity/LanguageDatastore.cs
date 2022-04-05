@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Excel;
+using Produktivkeller.SimpleLocalizations.Excel;
 using UnityEngine;
 
-namespace Unity
+namespace Produktivkeller.SimpleLocalizations.Unity
 {
     public class LanguageDatastore : MonoBehaviour
     {

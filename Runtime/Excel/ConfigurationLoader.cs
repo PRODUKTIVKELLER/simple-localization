@@ -3,12 +3,12 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using ExcelDataReader;
-using Unity;
+using Produktivkeller.SimpleLocalizations.Unity;
+using Produktivkeller.SimpleLogging;
 using UnityEngine;
 using UnityEngine.Networking;
-using Produktivkeller.SimpleLogging;
 
-namespace Excel
+namespace Produktivkeller.SimpleLocalizations.Excel
 {
     public class ConfigurationLoader : MonoBehaviour
     {

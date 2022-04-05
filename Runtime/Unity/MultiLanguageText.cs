@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Unity
+namespace Produktivkeller.SimpleLocalizations.Unity
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class MultiLanguageText : MonoBehaviour, IMultiLanguageSupport

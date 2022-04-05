@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Unity
+namespace Produktivkeller.SimpleLocalizations.Unity
 {
     public class LanguageService : MonoBehaviour
     {
