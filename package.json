@@ -1,7 +1,7 @@
 {
     "name": "com.produktivkeller.simple-localizations",
     "version": "0.1.0",
-    "displayName": "Simple Localizatiosn",
+    "displayName": "Simple Localizations",
     "description": "A light-weight tool to add localization to your unity projects.",
     "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localizations",
     "gitDependencies": {
