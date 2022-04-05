@@ -19,7 +19,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
         private void Load()
         {
 #if UNITY_EDITOR_OSX
-            Log.Debug("Adjusted path to configuration for Mac");
+            Log.Debug("Adjusted path to configuration for OS X.");
             string pathToConfiguration = "File://" +Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
 #else
             string pathToConfiguration = Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
@@ -31,8 +31,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
             {
                 if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
                 {
-                    Log.Debug("There was a problem loading the configuration.xlsx file: {}", unityWebRequest.error);
-                    Log.Debug("Tried to load file at path: {}",                              pathToConfiguration);
+                    Log.Debug("Could not load file at: {}. Errormessage: {}",     pathToConfiguration, unityWebRequest.error);
                     break;
                 }
             }
