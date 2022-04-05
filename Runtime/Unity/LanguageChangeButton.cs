@@ -15,12 +15,11 @@ namespace Produktivkeller.SimpleLocalizations.Unity
         {
             GetComponent<Button>().onClick.AddListener(ChangeLanguage);
             UpdateCheckImageStatus();
-            _localizationService = LocalizationService.GetInstance();
         }
 
-        public void ChangeLanguage()
+        private void ChangeLanguage()
         {
-            _localizationService.ChangeLanguage(language);
+            LocalizationService.Instance.ChangeLanguage(language);
         }
 
         public void OnLanguageHasChanged()

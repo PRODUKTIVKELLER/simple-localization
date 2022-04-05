@@ -90,27 +90,22 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 
         #region Singleton
 
-        private static LocalizationService _instance;
-
         private void Awake()
         {
-            if (_instance != null && _instance != this)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
             }
-            else if (_instance == null)
+            else if (Instance == null)
             {
-                _instance = this;
+                Instance = this;
                 transform.SetParent(null);
                 DontDestroyOnLoad(this);
                 Initialize();
             }
         }
 
-        public static LocalizationService GetInstance()
-        {
-            return _instance;
-        }
+        public static LocalizationService Instance { get; private set; }
 
         #endregion
     }

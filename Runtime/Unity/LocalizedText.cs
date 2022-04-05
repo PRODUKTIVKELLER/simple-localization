@@ -32,7 +32,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
                 _text = GetComponent<TextMeshProUGUI>();
             }
 
-            LocalizationService localizationService = LocalizationService.GetInstance();
+            LocalizationService localizationService = LocalizationService.Instance;
 
             // Check is required because "OnEnable" can be called before LanguageService is initialized.
             if (localizationService)
