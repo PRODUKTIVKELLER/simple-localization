@@ -10,7 +10,8 @@ namespace Produktivkeller.SimpleLocalizations.Excel
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Dictionary<Language, Dictionary<string, string>> _languageCache;
+
+        private LanguageCache _languageCache;
 
         public void Parse(IExcelDataReader excelDataReader)
         {
@@ -19,17 +20,17 @@ namespace Produktivkeller.SimpleLocalizations.Excel
             LoadKeysAndLocalizations(excelDataReader);
         }
 
-        public Dictionary<Language, Dictionary<string, string>> RetrieveLanguageCache()
+        public LanguageCache RetrieveLanguageCache()
         {
             return _languageCache;
         }
 
         private void InitCache()
         {
-            _languageCache = new Dictionary<Language, Dictionary<string, string>>();
+            _languageCache = new LanguageCache();
 
-            _languageCache[Language.DE] = new Dictionary<string, string>();
-            _languageCache[Language.EN] = new Dictionary<string, string>();
+            _languageCache.AddLanguage(Language.DE);
+            _languageCache.AddLanguage(Language.EN);
         }
 
         private void IgnoreHeaderRows(IExcelDataReader excelDataReader)
@@ -63,8 +64,8 @@ namespace Produktivkeller.SimpleLocalizations.Excel
                 }
                 else
                 {
-                    german                           = german.Trim();
-                    _languageCache[Language.DE][key] = german;
+                    german = german.Trim();
+                    _languageCache.AddEntry(Language.DE, key, german);
                 }
 
                 if (string.IsNullOrEmpty(english))
@@ -73,8 +74,8 @@ namespace Produktivkeller.SimpleLocalizations.Excel
                 }
                 else
                 {
-                    english                          = english.Trim();
-                    _languageCache[Language.EN][key] = english;
+                    english = english.Trim();
+                    _languageCache.AddEntry(Language.EN, key, english);
                 }
             }
         }

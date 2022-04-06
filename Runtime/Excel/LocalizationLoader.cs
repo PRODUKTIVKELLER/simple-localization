@@ -13,7 +13,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static Dictionary<Language, Dictionary<string, string>> LoadConfigurationAndBuildLanguageCache()
+        public static LanguageCache LoadConfigurationAndBuildLanguageCache()
         {
 #if UNITY_EDITOR_OSX
             Log.Debug("Adjusted path to configuration for OS X.");
@@ -33,7 +33,7 @@ namespace Produktivkeller.SimpleLocalizations.Excel
                 }
             }
 
-            Dictionary<Language, Dictionary<string, string>> languageCache = new Dictionary<Language, Dictionary<string, string>>();
+            LanguageCache languageCache = new LanguageCache();
 
             if (!unityWebRequest.isNetworkError && !unityWebRequest.isHttpError)
             {

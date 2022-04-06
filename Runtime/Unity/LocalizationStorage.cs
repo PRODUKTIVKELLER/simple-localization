@@ -6,21 +6,21 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 {
     public class LanguageDatastore
     {
-        private readonly Dictionary<Language, Dictionary<string, string>> _languageCache;
+        private readonly LanguageCache _languageCache;
 
-        public LanguageDatastore(Dictionary<Language, Dictionary<string, string>> languageCache)
+        public LanguageDatastore(LanguageCache languageCache)
         {
             _languageCache = languageCache;
         }
 
-        public string ResolveLocalizationKey(string localizationKey, Language language)
+        public string ResolveLocalizationKey(string key, Language language)
         {
-            if (_languageCache[language].ContainsKey(localizationKey))
+            if (_languageCache.ContainsKey(language, key))
             {
-                return _languageCache[language][localizationKey];
+                return _languageCache.GetKey(language, key);
             }
 
-            return "???" + localizationKey + "???";
+            return "???" + key + "???";
         }
     }
 }

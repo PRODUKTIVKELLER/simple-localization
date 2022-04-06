@@ -30,7 +30,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
                 _currentLanguage = Language.EN;
             }
 
-            Dictionary<Language, Dictionary<string, string>> languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
+            LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
             _languageDatastore = new LanguageDatastore(languageCache);
         }
 
@@ -75,7 +75,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
         private List<ILocalizationSupport> FindReceivers()
         {
             List<ILocalizationSupport> interfaces      = new List<ILocalizationSupport>();
-            GameObject[]                rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            GameObject[]               rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
             foreach (GameObject rootGameObject in rootGameObjects)
             {
                 ILocalizationSupport[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalizationSupport>();
