@@ -4,11 +4,11 @@ using UnityEngine.UI;
 namespace Produktivkeller.SimpleLocalization.Unity
 {
     [RequireComponent(typeof(Button))]
-    public class LanguageChangeButton : MonoBehaviour, ILocalizationSupport
+    public class LanguageChangeButton : MonoBehaviour, ILocalized
     {
         public  Language        language;
         public  GameObject      checkImage;
-        private LocalizationService _localizationService;
+
 
         private void Start()
         {
@@ -23,7 +23,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         public void OnLanguageHasChanged()
         {
-            if (_localizationService != null)
+            if (LocalizationService.Instance != null)
             {
                 UpdateCheckImageStatus();
             }
@@ -31,7 +31,10 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         private void UpdateCheckImageStatus()
         {
-            checkImage.SetActive(_localizationService.CurrentLanguage == language);
+            if (checkImage != null)
+            {
+                checkImage.SetActive(LocalizationService.Instance.CurrentLanguage == language); 
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Produktivkeller.SimpleLocalization.Unity
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class LocalizedText : MonoBehaviour, ILocalizationSupport
+    public class LocalizedText : MonoBehaviour, ILocalized
     {
         public string translationKey;
 

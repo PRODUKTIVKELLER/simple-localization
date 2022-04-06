@@ -13,7 +13,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
         public Language CurrentLanguage => _currentLanguage;
 
         private Language          _currentLanguage;
-        private LanguageDatastore _languageDatastore;
+        private LocalizationStorage _localizationStorage;
 
         protected override void Initialize()
         {
@@ -31,7 +31,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
             }
 
             LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
-            _languageDatastore = new LanguageDatastore(languageCache);
+            _localizationStorage = new LocalizationStorage(languageCache);
         }
 
         public void ChangeLanguage(Language language)
@@ -49,7 +49,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
                 return "???empty???";
             }
 
-            string textWithRichTextMarkers = _languageDatastore.ResolveLocalizationKey(localizationKey, _currentLanguage);
+            string textWithRichTextMarkers = _localizationStorage.ResolveLocalizationKey(localizationKey, _currentLanguage);
             return ResolveRichText(textWithRichTextMarkers);
         }
 
@@ -66,20 +66,20 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         private void InformReceivers()
         {
-            foreach (ILocalizationSupport multiLanguageSupport in FindReceivers())
+            foreach (ILocalized multiLanguageSupport in FindReceivers())
             {
                 multiLanguageSupport.OnLanguageHasChanged();
             }
         }
 
-        private List<ILocalizationSupport> FindReceivers()
+        private List<ILocalized> FindReceivers()
         {
-            List<ILocalizationSupport> interfaces      = new List<ILocalizationSupport>();
+            List<ILocalized> interfaces      = new List<ILocalized>();
             GameObject[]               rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
             foreach (GameObject rootGameObject in rootGameObjects)
             {
-                ILocalizationSupport[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalizationSupport>();
-                foreach (ILocalizationSupport childInterface in childInterfaces)
+                ILocalized[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalized>();
+                foreach (ILocalized childInterface in childInterfaces)
                 {
                     interfaces.Add(childInterface);
                 }

@@ -1,10 +1,10 @@
 ﻿namespace Produktivkeller.SimpleLocalization.Unity
 {
-    public class LanguageDatastore
+    public class LocalizationStorage
     {
         private readonly LanguageCache _languageCache;
 
-        public LanguageDatastore(LanguageCache languageCache)
+        public LocalizationStorage(LanguageCache languageCache)
         {
             _languageCache = languageCache;
         }
