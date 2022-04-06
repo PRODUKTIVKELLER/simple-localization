@@ -17,5 +17,12 @@
         "name": "PRODUKTIVKELLER Studios",
         "email": "info.produktivkeller@gmail.com",
         "url": "https://www.produktivkeller.com"
-    }
+    },
+    "samples": [
+        {
+            "displayName": "Configuration File",
+            "description": "Contains a basic configuration file that you can extend for your project.",
+            "path": "Samples~/SampleConfigurationFile"
+        }
+    ]
 }
