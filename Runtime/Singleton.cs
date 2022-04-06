@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Produktivkeller.SimpleLocalizations
+namespace Produktivkeller.SimpleLocalization
 {
     public abstract class Singleton<T> : MonoBehaviour where T : Component
     {

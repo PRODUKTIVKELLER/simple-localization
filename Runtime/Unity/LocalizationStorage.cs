@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using Produktivkeller.SimpleLocalizations.Excel;
-using UnityEngine;
-
-namespace Produktivkeller.SimpleLocalizations.Unity
+﻿namespace Produktivkeller.SimpleLocalization.Unity
 {
     public class LanguageDatastore
     {

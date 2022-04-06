@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Produktivkeller.SimpleLocalizations.Unity;
+using Produktivkeller.SimpleLocalization.Unity;
 
-namespace Produktivkeller.SimpleLocalizations
+namespace Produktivkeller.SimpleLocalization
 {
     public class LanguageCache
     {

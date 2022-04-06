@@ -1,4 +1,4 @@
-﻿namespace Produktivkeller.SimpleLocalizations.Unity
+﻿namespace Produktivkeller.SimpleLocalization.Unity
 {
     public enum Language
     {

@@ -1,15 +1,14 @@
 {
     "name": "com.produktivkeller.simple-localizations",
     "version": "0.1.0",
-    "displayName": "Simple Localizations",
+    "displayName": "Simple Localization",
     "description": "A light-weight tool to add localization to your unity projects.",
-    "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localizations",
+    "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localization",
     "gitDependencies": {
         "com.produktivkeller.simple-logging": "https://github.com/PRODUKTIVKELLER/simple-logging.git"
     },
     "keywords": [
-        "localization",
-        "localizations",
+        "localization",        
         "excel",
         "simple"
     ],
@@ -22,7 +21,7 @@
         {
             "displayName": "Configuration File",
             "description": "Contains a basic configuration file that you can extend for your project.",
-            "path": "Samples~/SampleConfigurationFile"
+            "path": "Samples~/configuration"
         }
     ]
 }

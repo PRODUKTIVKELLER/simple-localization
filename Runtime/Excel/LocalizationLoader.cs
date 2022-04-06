@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using ExcelDataReader;
-using Produktivkeller.SimpleLocalizations.Unity;
 using Produktivkeller.SimpleLogging;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Produktivkeller.SimpleLocalizations.Excel
+namespace Produktivkeller.SimpleLocalization.Excel
 {
     public static class ConfigurationLoader
     {

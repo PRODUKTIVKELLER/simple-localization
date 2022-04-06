@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Produktivkeller.SimpleLocalizations.Excel;
+using Produktivkeller.SimpleLocalization.Excel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Produktivkeller.SimpleLocalizations.Unity
+namespace Produktivkeller.SimpleLocalization.Unity
 {
     public class LocalizationService : Singleton<LocalizationService>
     {

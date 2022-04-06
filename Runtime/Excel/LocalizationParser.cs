@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using ExcelDataReader;
-using Produktivkeller.SimpleLocalizations.Unity;
+using Produktivkeller.SimpleLocalization.Unity;
 using Produktivkeller.SimpleLogging;
 
-namespace Produktivkeller.SimpleLocalizations.Excel
+namespace Produktivkeller.SimpleLocalization.Excel
 {
     public class TranslationParser
     {
