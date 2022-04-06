@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Produktivkeller.SimpleLocalizations.Unity
 {
-    public class LocalizationService : MonoBehaviour
+    public class LocalizationService : Singleton<LocalizationService>
     {
         private static readonly string PLAYER_PREF_KEY = "language";
 
@@ -15,7 +15,7 @@ namespace Produktivkeller.SimpleLocalizations.Unity
         private Language          _currentLanguage;
         private LanguageDatastore _languageDatastore;
 
-        private void Initialize()
+        protected override void Initialize()
         {
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
@@ -87,26 +87,5 @@ namespace Produktivkeller.SimpleLocalizations.Unity
 
             return interfaces;
         }
-
-        #region Singleton
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else if (Instance == null)
-            {
-                Instance = this;
-                transform.SetParent(null);
-                DontDestroyOnLoad(this);
-                Initialize();
-            }
-        }
-
-        public static LocalizationService Instance { get; private set; }
-
-        #endregion
     }
 }
