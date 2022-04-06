@@ -1,13 +1,15 @@
 # Simple Localization
-**Simple Localization** is a light-weight tool to add localization to your unity projects. It is completely free to use.
+**Simple Localization** is a light-weight tool to add localization to your unity projects and manage it in an excel sheet. It is completely free to use.
 
 ## One Datasheet for all languages
 
 **Simple Localization** allows you to do localization in a single document, that is very straightforward to use.
 
-![Screenshot showing installation with package manager](./Images~/add-package-from-git-url.png)
+![Screenshot showing structure of localization file.](./Images~/excel-example.png)
 
 It contains one column for the localization-keys and one column for every language in the project.
+
+## Getting Started
 
 ### Installation
 
@@ -34,6 +36,17 @@ Then install **Simple Localization** by adding the following lines to your `mani
 }
 ```
 
-Alternatively you can also import a package from GIT Url with the **package manager**:
+Alternatively you can also import the package from the GIT Url with the **package manager**:
 
 ![Screenshot showing installation with package manager](./Images~/add-package-from-git-url.png)
+
+
+### Set-Up
+
+1. Copy and paste the example prefab `Packages/com.produktivkeller.simple-audio-solution/Prefabs/LocalizationService` to your `Assets` folder. Otherwise, your changes to the prefab will be overriden by updates of **Simple Localization**.
+
+2. Make sure you have an excel document that contains your localization in the right format (the name of the sheet has to be "Localization" and it must contain the columns shown in the image above). If you want an easy template to work with, you can import it from the "Samples" section of this package and move it to the folder `Assets/StreamingAssets`.
+
+3. Drag and drop the prefab from step one to your scene.
+
+4. That's it!

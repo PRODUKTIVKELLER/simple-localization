@@ -21,7 +21,7 @@
         {
             "displayName": "Configuration File",
             "description": "Contains a basic configuration file that you can extend for your project.",
-            "path": "Samples~/configuration"
+            "path": "Samples~/Configuration"
         }
     ]
 }

@@ -44,7 +44,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
                     {
                         do
                         {
-                            if (reader.Name == "Localizations")
+                            if (reader.Name == "Localization")
                             {
                                 TranslationParser translationParser = new TranslationParser();
                                 translationParser.Parse(reader);
