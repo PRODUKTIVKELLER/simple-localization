@@ -13,6 +13,8 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
         public static LanguageCache LoadConfigurationAndBuildLanguageCache()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
 #if UNITY_EDITOR_OSX
             Log.Debug("Adjusted path to configuration for OS X.");
             string pathToConfiguration = "File://" +Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
