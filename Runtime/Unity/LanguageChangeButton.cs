@@ -6,7 +6,10 @@ namespace Produktivkeller.SimpleLocalization.Unity
     [RequireComponent(typeof(Button))]
     public class LanguageChangeButton : MonoBehaviour, ILocalized
     {
+        
+        [System.Obsolete("Language enum is obsolete. Use SimpleLocalization.Unity.Data.Language ScriptableObject instead")]
         public  Language        language;
+        public  Data.Language   languageData;
         public  GameObject      checkImage;
 
 
@@ -18,7 +21,15 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         private void ChangeLanguage()
         {
-            LocalizationService.Instance.ChangeLanguage(language);
+            if (language != null)
+            {
+                LocalizationService.Instance.ChangeLanguage(language);
+            }
+
+            if (languageData != null)
+            {
+                LocalizationService.Instance.ChangeLanguage(languageData);
+            }
         }
 
         public void OnLanguageHasChanged()
