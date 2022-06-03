@@ -14,10 +14,13 @@ namespace Produktivkeller.SimpleLocalization.Unity.Fonts
 
             foreach (OverwriteFont overwriteFont in overwriteFonts)
             {
-                _overwriteFonts.Add(overwriteFont.language, overwriteFont);
                 if (overwriteFont.GetType() == typeof(OriginalFont))
                 {
                     OriginalFont = (OriginalFont)overwriteFont;
+                }
+                else
+                {
+                    _overwriteFonts.Add(overwriteFont.language, overwriteFont);
                 }
             }
         }
