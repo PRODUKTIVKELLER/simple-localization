@@ -15,7 +15,16 @@ namespace Produktivkeller.SimpleLocalization.Unity.Fonts
             foreach (OverwriteFont overwriteFont in overwriteFonts)
             {
                 _overwriteFonts.Add(overwriteFont.language, overwriteFont);
+                if (overwriteFont.GetType() == typeof(OriginalFont))
+                {
+                    OriginalFont = (OriginalFont)overwriteFont;
+                }
             }
+        }
+
+        protected OriginalFont OriginalFont
+        {
+            get; set;
         }
 
         public OverwriteFont GetOverwriteFont(Language language)
@@ -28,7 +37,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Fonts
             return _overwriteFonts[language];
         }
 
-        public TMP_FontAsset GetOverwriteFontAsset(Language language)
+        public TMP_FontAsset GetOverwriteFontAsset(Language language, TMP_FontAsset originalFontVariant)
         {
             OverwriteFont overwriteFont = GetOverwriteFont(language);
             if (overwriteFont == null)
@@ -36,7 +45,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Fonts
                 return null;
             }
 
-            return overwriteFont.fontAsset;
+            return overwriteFont.GetFontAsset(OriginalFont.GetFontName(originalFontVariant));
         }
 
 
