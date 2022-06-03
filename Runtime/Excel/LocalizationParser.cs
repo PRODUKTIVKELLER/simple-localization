@@ -30,6 +30,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
             _languageCache.AddLanguage(Language.DE);
             _languageCache.AddLanguage(Language.EN);
+            _languageCache.AddLanguage(Language.CHN);
         }
 
         private void IgnoreHeaderRows(IExcelDataReader excelDataReader)
@@ -49,6 +50,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
                 string key     = excelDataReader.GetString(0);
                 string german  = excelDataReader.GetString(1);
                 string english = excelDataReader.GetString(2);
+                string chinese = excelDataReader.GetString(3);
 
                 if (string.IsNullOrEmpty(key))
                 {
@@ -75,6 +77,16 @@ namespace Produktivkeller.SimpleLocalization.Excel
                 {
                     english = english.Trim();
                     _languageCache.AddEntry(Language.EN, key, english);
+                }
+
+                if (string.IsNullOrEmpty(chinese))
+                {
+                    Log.Warn("Chinese localization is missing for key {}.", key);
+                }
+                else
+                {
+                    chinese = chinese.Trim();
+                    _languageCache.AddEntry(Language.CHN, key, english);
                 }
             }
         }
