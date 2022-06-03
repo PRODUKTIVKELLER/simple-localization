@@ -9,6 +9,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
         public string translationKey;
 
         private TextMeshProUGUI _text;
+        private TMP_FontAsset   _defaultFontAsset;
 
         private void Start()
         {
@@ -29,7 +30,8 @@ namespace Produktivkeller.SimpleLocalization.Unity
         {
             if (_text == null)
             {
-                _text = GetComponent<TextMeshProUGUI>();
+                _text             = GetComponent<TextMeshProUGUI>();
+                _defaultFontAsset = _text.font;
             }
 
             LocalizationService localizationService = LocalizationService.Instance;
@@ -38,7 +40,25 @@ namespace Produktivkeller.SimpleLocalization.Unity
             if (localizationService)
             {
                 _text.text = localizationService.ResolveLocalizationKey(translationKey);
+                UpdateFont(localizationService);
             }
+        }
+
+        private void UpdateFont(LocalizationService localizationService)
+        {
+            TMP_FontAsset overwriteFontAsset = localizationService.GetOverwriteFont();
+            if (overwriteFontAsset == null)
+            {
+                overwriteFontAsset = _defaultFontAsset;
+            }
+
+            if (overwriteFontAsset == _text.font)
+            {
+                return;
+            }
+
+            _text.font = overwriteFontAsset;
+            _text.UpdateFontAsset();
         }
     }
 }

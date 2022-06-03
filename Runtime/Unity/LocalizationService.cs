@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Produktivkeller.SimpleLocalization.Excel;
+using Produktivkeller.SimpleLocalization.Unity.Fonts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +42,11 @@ namespace Produktivkeller.SimpleLocalization.Unity
             PlayerPrefs.SetString(PLAYER_PREF_KEY, language.ToString());
             PlayerPrefs.Save();
             InformReceivers();
+        }
+
+        public TMP_FontAsset GetOverwriteFont()
+        {
+            return FontsProvider.Instance.GetOverwriteFontAsset(_currentLanguage);
         }
 
         public string ResolveLocalizationKey(string localizationKey)
