@@ -39,7 +39,10 @@ namespace Produktivkeller.SimpleLocalization.Unity
             // Check is required because "OnEnable" can be called before LanguageService is initialized.
             if (localizationService)
             {
-                _text.text = localizationService.ResolveLocalizationKey(translationKey);
+                if (translationKey.Length > 0)
+                {
+                    _text.text = localizationService.ResolveLocalizationKey(translationKey);
+                }
                 UpdateFont(localizationService);
             }
         }
