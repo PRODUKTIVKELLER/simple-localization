@@ -91,7 +91,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
             GameObject[]               rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
             foreach (GameObject rootGameObject in rootGameObjects)
             {
-                ILocalized[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalized>();
+                ILocalized[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalized>(true);
                 foreach (ILocalized childInterface in childInterfaces)
                 {
                     interfaces.Add(childInterface);
