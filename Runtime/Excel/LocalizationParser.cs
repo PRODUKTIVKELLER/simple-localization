@@ -86,7 +86,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
                 else
                 {
                     chinese = chinese.Trim();
-                    _languageCache.AddEntry(Language.CHN, key, english);
+                    _languageCache.AddEntry(Language.CHN, key, chinese);
                 }
             }
         }
