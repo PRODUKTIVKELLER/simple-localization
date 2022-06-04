@@ -118,6 +118,11 @@ namespace Produktivkeller.SimpleLocalization.Unity
         private void UpdateFont(GameObject localizedGameObject)
         {
             TextMeshProUGUI text = localizedGameObject.GetComponent<TextMeshProUGUI>();
+
+            if (!text)
+            {
+                return;
+            }
             
             TMP_FontAsset defaultFontAsset   = GetDefaultFontAsset(text);
             TMP_FontAsset overwriteFontAsset = GetOverwriteFont(defaultFontAsset);
