@@ -43,6 +43,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
                 {
                     _text.text = localizationService.ResolveLocalizationKey(translationKey);
                 }
+                
                 UpdateFont(localizationService);
             }
         }
@@ -50,6 +51,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
         private void UpdateFont(LocalizationService localizationService)
         {
             TMP_FontAsset overwriteFontAsset = localizationService.GetOverwriteFont(_defaultFontAsset);
+            
             if (overwriteFontAsset == null)
             {
                 overwriteFontAsset = _defaultFontAsset;

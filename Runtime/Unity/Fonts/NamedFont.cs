@@ -7,7 +7,6 @@ using TMPro;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Fonts
 {
-
     [Serializable]
     public class NamedFont
     {

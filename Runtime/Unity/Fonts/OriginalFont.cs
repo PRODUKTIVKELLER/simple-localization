@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Fonts
 {
-    [CreateAssetMenu(fileName = "OriginalFont", menuName = "PRODUKTIVKELLER/SimpleLocalization/OriginalFont")]
+    [CreateAssetMenu(fileName = "Original Font", menuName = "PRODUKTIVKELLER/Simple Localization/Original Font")]
     public class OriginalFont : OverwriteFont
     {
     }

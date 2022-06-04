@@ -50,9 +50,9 @@ namespace Produktivkeller.SimpleLocalization.Unity
             InformReceivers();
         }
 
-        public TMP_FontAsset GetOverwriteFont(TMP_FontAsset originalFontVariant)
+        public TMP_FontAsset GetOverwriteFont(TMP_FontAsset tmpFontAsset)
         {
-            return FontsProvider.Instance.GetOverwriteFontAsset(_currentLanguage, originalFontVariant);
+            return FontsProvider.Instance.GetOverwriteFontAsset(_currentLanguage, tmpFontAsset);
         }
 
         public string ResolveLocalizationKey(string localizationKey)
