@@ -44,7 +44,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
             LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
             _localizationStorage = new LocalizationStorage(languageCache);
 
-            InformReceiversAboutFontChange();
+            InformReceivers();
         }
 
         public void ChangeLanguage(Language language)
