@@ -41,8 +41,8 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
         private void LoadKeysAndLocalizations(IExcelDataReader excelDataReader)
         {
-            Log.Debug("Found {} translations in configuration file.", excelDataReader.RowCount);
-
+            int count = 0;
+            
             for (int i = 0; i < excelDataReader.RowCount; i++)
             {
                 excelDataReader.Read();
@@ -57,6 +57,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
                     continue;
                 }
 
+                count++;
                 key = key.Trim();
 
                 if (string.IsNullOrEmpty(german))
@@ -89,6 +90,8 @@ namespace Produktivkeller.SimpleLocalization.Excel
                     _languageCache.AddEntry(Language.CHN, key, chinese);
                 }
             }
+            
+            Log.Debug("Found {} translations in configuration file.", count);
         }
     }
 }

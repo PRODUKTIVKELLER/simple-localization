@@ -14,11 +14,14 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         public Language CurrentLanguage => _currentLanguage;
 
-        private Language          _currentLanguage;
-        private LocalizationStorage _localizationStorage;
+        private Language                       _currentLanguage;
+        private LocalizationStorage            _localizationStorage;
+        private Dictionary<int, TMP_FontAsset> _defaultFontAssetsByGameObjectId;
 
         protected override void Initialize()
         {
+            _defaultFontAssetsByGameObjectId = new Dictionary<int, TMP_FontAsset>();
+            
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
                 _currentLanguage = (Language) Enum.Parse(typeof(Language), PlayerPrefs.GetString(PLAYER_PREF_KEY));
@@ -40,6 +43,8 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
             LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
             _localizationStorage = new LocalizationStorage(languageCache);
+
+            InformReceiversAboutFontChange();
         }
 
         public void ChangeLanguage(Language language)
@@ -79,9 +84,18 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         private void InformReceivers()
         {
-            foreach (ILocalized multiLanguageSupport in FindReceivers())
+            foreach (ILocalized localized in FindReceivers())
             {
-                multiLanguageSupport.OnLanguageHasChanged();
+                UpdateFont(localized.gameObject);
+                localized.OnLanguageHasChanged();
+            }
+        }
+
+        private void InformReceiversAboutFontChange()
+        {
+            foreach (ILocalized localized in FindReceivers())
+            {
+                UpdateFont(localized.gameObject);
             }
         }
 
@@ -99,6 +113,39 @@ namespace Produktivkeller.SimpleLocalization.Unity
             }
 
             return interfaces;
+        }
+
+        private void UpdateFont(GameObject localizedGameObject)
+        {
+            TextMeshProUGUI text = localizedGameObject.GetComponent<TextMeshProUGUI>();
+            
+            TMP_FontAsset defaultFontAsset   = GetDefaultFontAsset(text);
+            TMP_FontAsset overwriteFontAsset = GetOverwriteFont(defaultFontAsset);
+            
+            if (overwriteFontAsset == null)
+            {
+                overwriteFontAsset = defaultFontAsset;
+            }
+            
+            if (overwriteFontAsset == text.font)
+            {
+                return;
+            }
+
+            text.font = overwriteFontAsset;
+            text.UpdateFontAsset();   
+        }
+
+        private TMP_FontAsset GetDefaultFontAsset(TextMeshProUGUI text)
+        {
+            int instanceID = text.gameObject.GetInstanceID();
+            
+            if (!_defaultFontAssetsByGameObjectId.ContainsKey(instanceID))
+            {
+                _defaultFontAssetsByGameObjectId[instanceID] = text.font;
+            }
+
+            return _defaultFontAssetsByGameObjectId[instanceID];
         }
     }
 }
