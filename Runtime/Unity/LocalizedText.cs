@@ -42,6 +42,8 @@ namespace Produktivkeller.SimpleLocalization.Unity
             {
                 _text.text = LocalizationService.Instance.ResolveLocalizationKey(translationKey);
             }
+
+            LocalizationService.Instance.UpdateFont(gameObject);
         }
     }
 }

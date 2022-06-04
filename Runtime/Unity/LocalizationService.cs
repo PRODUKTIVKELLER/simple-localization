@@ -115,7 +115,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
             return interfaces;
         }
 
-        private void UpdateFont(GameObject localizedGameObject)
+        public void UpdateFont(GameObject localizedGameObject)
         {
             TextMeshProUGUI text = localizedGameObject.GetComponent<TextMeshProUGUI>();
 
