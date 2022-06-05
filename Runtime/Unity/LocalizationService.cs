@@ -47,6 +47,16 @@ namespace Produktivkeller.SimpleLocalization.Unity
             InformReceivers();
         }
 
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+        {
+            InformReceivers();
+        }
+
         public void ChangeLanguage(Language language)
         {
             _currentLanguage = language;

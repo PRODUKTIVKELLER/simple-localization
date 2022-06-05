@@ -1,28 +1,28 @@
 {
-    "name": "com.produktivkeller.simple-localization",
-    "version": "0.1.0",
-    "displayName": "Simple Localization",
-    "description":"A light-weight tool to add localization to your Unity projects and manage it in an Excel sheet.",
-    "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localization",
-    "gitDependencies": {
-        "com.produktivkeller.simple-logging": "https://github.com/PRODUKTIVKELLER/simple-logging.git"
-    },
-    "keywords": [
-        "localization",        
-        "excel",
-        "simple",
-        "unity"
-    ],
-    "author": {
-        "name": "PRODUKTIVKELLER Studios",
-        "email": "info.produktivkeller@gmail.com",
-        "url": "https://www.produktivkeller.com"
-    },
-    "samples": [
-        {
-            "displayName": "Configuration File",
-            "description": "Contains a basic configuration file that you can extend for your project.",
-            "path": "Samples~/Configuration"
-        }
-    ]
+  "name": "com.produktivkeller.simple-localization",
+  "version": "0.1.1",
+  "displayName": "Simple Localization",
+  "description": "A light-weight tool to add localization to your Unity projects and manage it in an Excel sheet.",
+  "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localization",
+  "gitDependencies": {
+    "com.produktivkeller.simple-logging": "https://github.com/PRODUKTIVKELLER/simple-logging.git"
+  },
+  "keywords": [
+    "localization",
+    "excel",
+    "simple",
+    "unity"
+  ],
+  "author": {
+    "name": "PRODUKTIVKELLER Studios",
+    "email": "info.produktivkeller@gmail.com",
+    "url": "https://www.produktivkeller.com"
+  },
+  "samples": [
+    {
+      "displayName": "Configuration File",
+      "description": "Contains a basic configuration file that you can extend for your project.",
+      "path": "Samples~/Configuration"
+    }
+  ]
 }

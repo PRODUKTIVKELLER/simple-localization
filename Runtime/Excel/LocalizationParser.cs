@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using ExcelDataReader;
 using Produktivkeller.SimpleLocalization.Unity;
 using Produktivkeller.SimpleLogging;
@@ -41,8 +42,9 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
         private void LoadKeysAndLocalizations(IExcelDataReader excelDataReader)
         {
-            int count = 0;
-            
+            List<string> warnings = new List<string>();
+            int          count    = 0;
+
             for (int i = 0; i < excelDataReader.RowCount; i++)
             {
                 excelDataReader.Read();
@@ -62,7 +64,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
                 if (string.IsNullOrEmpty(german))
                 {
-                    Log.Warn("German localization is missing for key {}.", key);
+                    warnings.Add($"German localization is missing for key [{key}].");
                 }
                 else
                 {
@@ -72,7 +74,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
                 if (string.IsNullOrEmpty(english))
                 {
-                    Log.Warn("English localization is missing for key {}.", key);
+                    warnings.Add($"English localization is missing for key [{key}].");
                 }
                 else
                 {
@@ -82,7 +84,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
                 if (string.IsNullOrEmpty(chinese))
                 {
-                    Log.Warn("Chinese localization is missing for key {}.", key);
+                    warnings.Add($"Chinese localization is missing for key [{key}].");
                 }
                 else
                 {
@@ -90,8 +92,13 @@ namespace Produktivkeller.SimpleLocalization.Excel
                     _languageCache.AddEntry(Language.CHN, key, chinese);
                 }
             }
-            
+
             Log.Debug("Found {} translations in configuration file.", count);
+
+            if (warnings.Count > 0)
+            {
+                Log.Warn("Encountered problems while reading configuration file:\n\n- " + string.Join("\n- ", warnings));
+            }
         }
     }
 }
