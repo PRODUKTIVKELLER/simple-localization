@@ -30,12 +30,6 @@ namespace Produktivkeller.SimpleLocalization.Unity
             {
                 _currentLanguage = Language.DE;
             }
-            else if (Application.systemLanguage == SystemLanguage.Chinese
-                || Application.systemLanguage == SystemLanguage.ChineseSimplified
-                || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-            {
-                _currentLanguage = Language.CHN;
-            }
             else
             {
                 _currentLanguage = Language.EN;
