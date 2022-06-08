@@ -10,7 +10,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 {
     public static class ConfigurationLoader
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static LanguageCache LoadConfigurationAndBuildLanguageCache()
         {

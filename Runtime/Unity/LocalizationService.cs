@@ -12,27 +12,46 @@ namespace Produktivkeller.SimpleLocalization.Unity
     {
         private static readonly string PLAYER_PREF_KEY = "language";
 
-        public Language CurrentLanguage => _currentLanguage;
+        public Language CurrentLanguage { get; private set; }
 
-        private Language                       _currentLanguage;
         private LocalizationStorage            _localizationStorage;
         private Dictionary<int, TMP_FontAsset> _defaultFontAssetsByGameObjectId;
 
         protected override void Initialize()
         {
             _defaultFontAssetsByGameObjectId = new Dictionary<int, TMP_FontAsset>();
-            
+
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
-                _currentLanguage = (Language) Enum.Parse(typeof(Language), PlayerPrefs.GetString(PLAYER_PREF_KEY));
+                CurrentLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString(PLAYER_PREF_KEY));
             }
             else if (Application.systemLanguage == SystemLanguage.German)
             {
-                _currentLanguage = Language.DE;
+                CurrentLanguage = Language.DE;
+            }
+            else if (Application.systemLanguage == SystemLanguage.French)
+            {
+                CurrentLanguage = Language.FR;
+            }
+            else if (Application.systemLanguage == SystemLanguage.Korean)
+            {
+                CurrentLanguage = Language.KO;
+            }
+            else if (Application.systemLanguage == SystemLanguage.Spanish)
+            {
+                CurrentLanguage = Language.ES;
+            }
+            else if (Application.systemLanguage == SystemLanguage.Dutch)
+            {
+                CurrentLanguage = Language.NL;
+            }
+            else if (Application.systemLanguage is SystemLanguage.Chinese or SystemLanguage.ChineseSimplified or SystemLanguage.ChineseTraditional)
+            {
+                CurrentLanguage = Language.ZH;
             }
             else
             {
-                _currentLanguage = Language.EN;
+                CurrentLanguage = Language.EN;
             }
 
             LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
@@ -53,7 +72,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         public void ChangeLanguage(Language language)
         {
-            _currentLanguage = language;
+            CurrentLanguage = language;
             PlayerPrefs.SetString(PLAYER_PREF_KEY, language.ToString());
             PlayerPrefs.Save();
             InformReceivers();
@@ -61,7 +80,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         public TMP_FontAsset GetOverwriteFont(TMP_FontAsset tmpFontAsset)
         {
-            return FontsProvider.Instance.GetOverwriteFontAsset(_currentLanguage, tmpFontAsset);
+            return FontsProvider.Instance.GetOverwriteFontAsset(CurrentLanguage, tmpFontAsset);
         }
 
         public string ResolveLocalizationKey(string localizationKey)
@@ -71,7 +90,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
                 return "???empty???";
             }
 
-            string textWithRichTextMarkers = _localizationStorage.ResolveLocalizationKey(localizationKey, _currentLanguage);
+            string textWithRichTextMarkers = _localizationStorage.ResolveLocalizationKey(localizationKey, CurrentLanguage);
             return ResolveRichText(textWithRichTextMarkers);
         }
 
@@ -95,18 +114,10 @@ namespace Produktivkeller.SimpleLocalization.Unity
             }
         }
 
-        private void InformReceiversAboutFontChange()
-        {
-            foreach (ILocalized localized in FindReceivers())
-            {
-                UpdateFont(localized.gameObject);
-            }
-        }
-
         private List<ILocalized> FindReceivers()
         {
             List<ILocalized> interfaces      = new List<ILocalized>();
-            GameObject[]               rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            GameObject[]     rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
             foreach (GameObject rootGameObject in rootGameObjects)
             {
                 ILocalized[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalized>(true);
@@ -127,28 +138,28 @@ namespace Produktivkeller.SimpleLocalization.Unity
             {
                 return;
             }
-            
+
             TMP_FontAsset defaultFontAsset   = GetDefaultFontAsset(text);
             TMP_FontAsset overwriteFontAsset = GetOverwriteFont(defaultFontAsset);
-            
+
             if (overwriteFontAsset == null)
             {
                 overwriteFontAsset = defaultFontAsset;
             }
-            
+
             if (overwriteFontAsset == text.font)
             {
                 return;
             }
 
             text.font = overwriteFontAsset;
-            text.UpdateFontAsset();   
+            text.UpdateFontAsset();
         }
 
         private TMP_FontAsset GetDefaultFontAsset(TextMeshProUGUI text)
         {
             int instanceID = text.gameObject.GetInstanceID();
-            
+
             if (!_defaultFontAssetsByGameObjectId.ContainsKey(instanceID))
             {
                 _defaultFontAssetsByGameObjectId[instanceID] = text.font;
