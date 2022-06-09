@@ -29,7 +29,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
             unityWebRequest.SendWebRequest();
             while (!unityWebRequest.isDone)
             {
-                if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+                if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError || unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
                     Log.Debug("Could not load file at: {}. Error: {}", pathToConfiguration, unityWebRequest.error);
                     break;
@@ -38,25 +38,25 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
             LanguageCache languageCache = new LanguageCache();
 
-            if (!unityWebRequest.isNetworkError && !unityWebRequest.isHttpError)
+            if (unityWebRequest.result != UnityWebRequest.Result.ConnectionError && unityWebRequest.result != UnityWebRequest.Result.ProtocolError)
             {
                 byte[] results = unityWebRequest.downloadHandler.data;
 
                 // https://answers.unity.com/questions/42955/codepage-1252-not-supported-works-in-editor-but-no.html
-                using (var memoryStream = new MemoryStream(results))
+                using (MemoryStream memoryStream = new MemoryStream(results))
                 {
-                    using (var reader = ExcelReaderFactory.CreateReader(memoryStream))
+                    using (IExcelDataReader excelDataReader = ExcelReaderFactory.CreateReader(memoryStream))
                     {
                         do
                         {
-                            if (reader.Name == ConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName)
+                            if (excelDataReader.Name == ConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName)
                             {
                                 LocalizationParser localizationParser = new LocalizationParser();
-                                localizationParser.Parse(reader);
+                                localizationParser.Parse(excelDataReader);
                                 languageCache = localizationParser.RetrieveLanguageCache();
                                 break;
                             }
-                        } while (reader.NextResult());
+                        } while (excelDataReader.NextResult());
                     }
                 }
             }
