@@ -44,6 +44,7 @@
         Ukrainian          = 39,
         Vietnamese         = 40,
         ChineseSimplified  = 41,
-        ChineseTraditional = 42
+        ChineseTraditional = 42,
+        Brazilian          = 43
     }
 }
