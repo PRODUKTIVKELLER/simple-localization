@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Components
 {
-    [RequireComponent(typeof(TextMeshProUGUI))]
+    [RequireComponent(typeof(TMP_Text))]
     public class LocalizedText : MonoBehaviour, ILocalized
     {
         public string translationKey;
 
-        private TextMeshProUGUI _text;
+        private TMP_Text _text;
 
         private void Start()
         {

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Produktivkeller.SimpleLocalization.Code_Patterns;
 using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Components;
 using Produktivkeller.SimpleLocalization.Unity.Data;
+using Produktivkeller.SimpleLocalization.Unity.Extensions;
 using Produktivkeller.SimpleLocalization.Unity.Fonts;
 using Produktivkeller.SimpleLogging;
 using TMPro;
@@ -71,15 +73,6 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         private LanguageId ResolveLanguageFromSteam()
         {
             return LanguageId.None;
-        }
-
-        [ContextMenu("Delete Player Prefs")]
-        private void DeletePlayerPrefs()
-        {
-            PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
-            PlayerPrefs.Save();
-
-            Log.Debug("Deleted 'PlayerPrefs' entry for preferred language.");
         }
 
         private void OnEnable()
@@ -154,7 +147,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
 
         public void UpdateFont(GameObject localizedGameObject)
         {
-            TextMeshProUGUI text = localizedGameObject.GetComponent<TextMeshProUGUI>();
+            TMP_Text text = localizedGameObject.GetComponent<TMP_Text>();
 
             if (!text)
             {
@@ -175,10 +168,19 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             }
 
             text.font = overwriteFontAsset;
-            text.UpdateFontAsset();
+
+            switch (text)
+            {
+                case TextMeshProUGUI t1:
+                    t1.UpdateFontAsset();
+                    break;
+                case TextMeshPro t2:
+                    t2.UpdateFontAsset();
+                    break;
+            }
         }
 
-        private TMP_FontAsset GetDefaultFontAsset(TextMeshProUGUI text)
+        private TMP_FontAsset GetDefaultFontAsset(TMP_Text text)
         {
             int instanceID = text.gameObject.GetInstanceID();
 
@@ -189,5 +191,48 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
 
             return _defaultFontAssetsByGameObjectId[instanceID];
         }
+
+        #region Context Actions
+
+        [ContextMenu("Delete player prefs")]
+        private void DeletePlayerPrefs()
+        {
+            PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
+            PlayerPrefs.Save();
+
+            Log.Debug("Deleted 'PlayerPrefs' entry for preferred language.");
+        }
+
+        [ContextMenu("Find non-localized texts")]
+        private void FindNonLocalizedTexts()
+        {
+            List<TMP_Text> nonLocalizedTexts = new List<TMP_Text>();
+            GameObject[]   rootGameObjects   = SceneManager.GetActiveScene().GetRootGameObjects();
+
+            foreach (GameObject rootGameObject in rootGameObjects)
+            {
+                TMP_Text[] texts = rootGameObject.GetComponentsInChildren<TMP_Text>(true);
+                foreach (TMP_Text text in texts)
+                {
+                    if (text.GetComponent<ILocalized>() == null)
+                    {
+                        nonLocalizedTexts.Add(text);
+                    }
+                }
+            }
+
+            if (nonLocalizedTexts.Count <= 0)
+            {
+                Log.Debug("All text elements are localized.");
+                return;
+            }
+
+            string fullNamesWithNewLines = nonLocalizedTexts
+                                           .Select(t => t.gameObject.BuildFullName())
+                                           .Aggregate((a, b) => a + "\n" + b);
+            Log.Warn("The following text elements are not localized:\n\n" + fullNamesWithNewLines + "\n");
+        }
+
+        #endregion
     }
 }
