@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Produktivkeller.SimpleLocalization.Code_Patterns;
 using Produktivkeller.SimpleLocalization.Excel;
+using Produktivkeller.SimpleLocalization.Unity.Components;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLocalization.Unity.Fonts;
 using Produktivkeller.SimpleLogging;
@@ -10,7 +11,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Produktivkeller.SimpleLocalization.Unity
+namespace Produktivkeller.SimpleLocalization.Unity.Core
 {
     public class LocalizationService : SingletonMonoBehaviour<LocalizationService>
     {

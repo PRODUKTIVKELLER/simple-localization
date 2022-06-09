@@ -1,6 +1,6 @@
 ﻿using Produktivkeller.SimpleLocalization.Unity.Data;
 
-namespace Produktivkeller.SimpleLocalization.Unity
+namespace Produktivkeller.SimpleLocalization.Unity.Core
 {
     public class LocalizationStorage
     {

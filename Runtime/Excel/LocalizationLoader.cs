@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Text;
 using ExcelDataReader;
-using Produktivkeller.SimpleLocalization.Unity;
+using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLogging;
 using UnityEngine;

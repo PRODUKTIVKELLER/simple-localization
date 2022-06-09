@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using ExcelDataReader;
-using Produktivkeller.SimpleLocalization.Unity;
+using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLogging;
 
@@ -51,15 +51,15 @@ namespace Produktivkeller.SimpleLocalization.Excel
                 excelDataReader.Read();
 
                 string key = excelDataReader.GetString(0);
-                
+
                 if (string.IsNullOrEmpty(key))
                 {
                     continue;
                 }
-                
+
                 count++;
                 key = key.Trim();
-                
+
                 ProcessRow(excelDataReader, warnings, key);
             }
 

@@ -1,7 +1,8 @@
-﻿using TMPro;
+﻿using Produktivkeller.SimpleLocalization.Unity.Core;
+using TMPro;
 using UnityEngine;
 
-namespace Produktivkeller.SimpleLocalization.Unity
+namespace Produktivkeller.SimpleLocalization.Unity.Components
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class LocalizedText : MonoBehaviour, ILocalized

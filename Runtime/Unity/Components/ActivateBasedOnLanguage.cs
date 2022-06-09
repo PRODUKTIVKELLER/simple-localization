@@ -1,9 +1,10 @@
-﻿using Produktivkeller.SimpleLocalization.Unity.Data;
+﻿using Produktivkeller.SimpleLocalization.Unity.Core;
+using Produktivkeller.SimpleLocalization.Unity.Data;
 using UnityEngine;
 
-namespace Produktivkeller.SimpleLocalization.Unity
+namespace Produktivkeller.SimpleLocalization.Unity.Components
 {
-    public class OnlyActiveForLanguage : MonoBehaviour, ILocalized
+    public class ActivateBasedOnLanguage : MonoBehaviour, ILocalized
     {
         public LanguageId languageId;
 

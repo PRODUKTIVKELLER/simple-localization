@@ -1,8 +1,9 @@
-﻿using Produktivkeller.SimpleLocalization.Unity.Data;
+﻿using Produktivkeller.SimpleLocalization.Unity.Core;
+using Produktivkeller.SimpleLocalization.Unity.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Produktivkeller.SimpleLocalization.Unity
+namespace Produktivkeller.SimpleLocalization.Unity.Components
 {
     [RequireComponent(typeof(Button))]
     public class LanguageChangeButton : MonoBehaviour, ILocalized

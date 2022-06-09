@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Produktivkeller.SimpleLocalization.Unity
+namespace Produktivkeller.SimpleLocalization.Unity.Components
 {
     public interface ILocalized
     {
