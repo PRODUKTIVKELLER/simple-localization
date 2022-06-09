@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Produktivkeller.SimpleLocalization.Code_Patterns;
 using Produktivkeller.SimpleLocalization.Excel;
+using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLocalization.Unity.Fonts;
+using Produktivkeller.SimpleLogging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,9 +14,11 @@ namespace Produktivkeller.SimpleLocalization.Unity
 {
     public class LocalizationService : SingletonMonoBehaviour<LocalizationService>
     {
-        private static readonly string PLAYER_PREF_KEY = "language";
+        private const string PLAYER_PREF_KEY = "language";
 
-        public Language CurrentLanguage { get; private set; }
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+        public LanguageId CurrentLanguageId { get; private set; }
 
         private LocalizationStorage            _localizationStorage;
         private Dictionary<int, TMP_FontAsset> _defaultFontAssetsByGameObjectId;
@@ -23,41 +29,56 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
-                CurrentLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString(PLAYER_PREF_KEY));
-            }
-            else if (Application.systemLanguage == SystemLanguage.German)
-            {
-                CurrentLanguage = Language.DE;
-            }
-            else if (Application.systemLanguage == SystemLanguage.French)
-            {
-                CurrentLanguage = Language.FR;
-            }
-            else if (Application.systemLanguage == SystemLanguage.Korean)
-            {
-                CurrentLanguage = Language.KO;
-            }
-            else if (Application.systemLanguage == SystemLanguage.Spanish)
-            {
-                CurrentLanguage = Language.ES;
-            }
-            else if (Application.systemLanguage == SystemLanguage.Dutch)
-            {
-                CurrentLanguage = Language.NL;
-            }
-            else if (Application.systemLanguage is SystemLanguage.Chinese or SystemLanguage.ChineseSimplified or SystemLanguage.ChineseTraditional)
-            {
-                CurrentLanguage = Language.ZH;
+                CurrentLanguageId = (LanguageId)Enum.Parse(typeof(LanguageId), PlayerPrefs.GetString(PLAYER_PREF_KEY));
             }
             else
             {
-                CurrentLanguage = Language.EN;
+                LanguageId languageId = ResolveLanguageFromSteam();
+
+                if (languageId == LanguageId.None)
+                {
+                    languageId = ResolveLanguageFromUnity();
+                }
+
+                if (languageId == LanguageId.None)
+                {
+                    languageId = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
+                }
+
+                CurrentLanguageId = languageId;
             }
 
             LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
             _localizationStorage = new LocalizationStorage(languageCache);
 
             InformReceivers();
+        }
+
+        private LanguageId ResolveLanguageFromUnity()
+        {
+            Log.Debug("Trying to resolve language with the Unity API. Unity system language: {}", Application.systemLanguage);
+            LanguageId languageId = (LanguageId)((int)Application.systemLanguage + 1);
+
+            if (ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Contains(languageId))
+            {
+                return languageId;
+            }
+
+            return LanguageId.None;
+        }
+
+        private LanguageId ResolveLanguageFromSteam()
+        {
+            return LanguageId.None;
+        }
+
+        [ContextMenu("Delete Player Prefs")]
+        private void DeletePlayerPrefs()
+        {
+            PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
+            PlayerPrefs.Save();
+
+            Log.Debug("Deleted 'PlayerPrefs' entry for preferred language.");
         }
 
         private void OnEnable()
@@ -70,17 +91,17 @@ namespace Produktivkeller.SimpleLocalization.Unity
             InformReceivers();
         }
 
-        public void ChangeLanguage(Language language)
+        public void ChangeLanguage(LanguageId languageId)
         {
-            CurrentLanguage = language;
-            PlayerPrefs.SetString(PLAYER_PREF_KEY, language.ToString());
+            CurrentLanguageId = languageId;
+            PlayerPrefs.SetString(PLAYER_PREF_KEY, languageId.ToString());
             PlayerPrefs.Save();
             InformReceivers();
         }
 
         public TMP_FontAsset GetOverwriteFont(TMP_FontAsset tmpFontAsset)
         {
-            return FontsProvider.Instance.GetOverwriteFontAsset(CurrentLanguage, tmpFontAsset);
+            return OverwriteFontProvider.Instance.GetOverwriteFontAsset(CurrentLanguageId, tmpFontAsset);
         }
 
         public string ResolveLocalizationKey(string localizationKey)
@@ -90,7 +111,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
                 return "???empty???";
             }
 
-            string textWithRichTextMarkers = _localizationStorage.ResolveLocalizationKey(localizationKey, CurrentLanguage);
+            string textWithRichTextMarkers = _localizationStorage.ResolveLocalizationKey(localizationKey, CurrentLanguageId);
             return ResolveRichText(textWithRichTextMarkers);
         }
 

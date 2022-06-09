@@ -2,13 +2,15 @@
 using System.Reflection;
 using System.Text;
 using ExcelDataReader;
+using Produktivkeller.SimpleLocalization.Unity;
+using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLogging;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Produktivkeller.SimpleLocalization.Excel
 {
-    public static class ConfigurationLoader
+    internal static class ConfigurationLoader
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -29,7 +31,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
             {
                 if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
                 {
-                    Log.Debug("Could not load file at: {}. Errormessage: {}", pathToConfiguration, unityWebRequest.error);
+                    Log.Debug("Could not load file at: {}. Error: {}", pathToConfiguration, unityWebRequest.error);
                     break;
                 }
             }
@@ -47,11 +49,11 @@ namespace Produktivkeller.SimpleLocalization.Excel
                     {
                         do
                         {
-                            if (reader.Name == "Localization")
+                            if (reader.Name == ConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName)
                             {
-                                TranslationParser translationParser = new TranslationParser();
-                                translationParser.Parse(reader);
-                                languageCache = translationParser.RetrieveLanguageCache();
+                                LocalizationParser localizationParser = new LocalizationParser();
+                                localizationParser.Parse(reader);
+                                languageCache = localizationParser.RetrieveLanguageCache();
                                 break;
                             }
                         } while (reader.NextResult());

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Produktivkeller.SimpleLocalization.Unity.Data;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Produktivkeller.SimpleLocalization.Unity
@@ -6,10 +7,9 @@ namespace Produktivkeller.SimpleLocalization.Unity
     [RequireComponent(typeof(Button))]
     public class LanguageChangeButton : MonoBehaviour, ILocalized
     {
-        public  Language        language;
-        public  GameObject      checkImage;
-
-
+        public LanguageId languageId;
+        public GameObject checkImage;
+        
         private void Start()
         {
             GetComponent<Button>().onClick.AddListener(ChangeLanguage);
@@ -18,23 +18,27 @@ namespace Produktivkeller.SimpleLocalization.Unity
 
         private void ChangeLanguage()
         {
-            LocalizationService.Instance.ChangeLanguage(language);
+            LocalizationService.Instance.ChangeLanguage(languageId);
         }
 
         public void OnLanguageHasChanged()
         {
-            if (LocalizationService.Instance != null)
+            if (LocalizationService.Instance == null)
             {
-                UpdateCheckImageStatus();
+                return;
             }
+
+            UpdateCheckImageStatus();
         }
 
         private void UpdateCheckImageStatus()
         {
-            if (checkImage != null)
+            if (checkImage == null)
             {
-                checkImage.SetActive(LocalizationService.Instance.CurrentLanguage == language); 
+                return;
             }
+
+            checkImage.SetActive(LocalizationService.Instance.CurrentLanguageId == languageId);
         }
     }
 }

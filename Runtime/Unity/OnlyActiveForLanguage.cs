@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Produktivkeller.SimpleLocalization.Unity.Data;
+using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity
 {
     public class OnlyActiveForLanguage : MonoBehaviour, ILocalized
     {
-        public Language language;
+        public LanguageId languageId;
 
         private void Start()
         {
@@ -28,7 +29,7 @@ namespace Produktivkeller.SimpleLocalization.Unity
             // Check is required because "OnEnable" can be called before LanguageService is initialized.
             if (localizationService)
             {
-                gameObject.SetActive(localizationService.CurrentLanguage == language);
+                gameObject.SetActive(localizationService.CurrentLanguageId == languageId);
             }
         }
     }

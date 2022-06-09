@@ -1,4 +1,6 @@
-﻿namespace Produktivkeller.SimpleLocalization.Unity
+﻿using Produktivkeller.SimpleLocalization.Unity.Data;
+
+namespace Produktivkeller.SimpleLocalization.Unity
 {
     public class LocalizationStorage
     {
@@ -9,11 +11,11 @@
             _languageCache = languageCache;
         }
 
-        public string ResolveLocalizationKey(string key, Language language)
+        public string ResolveLocalizationKey(string key, LanguageId languageId)
         {
-            if (_languageCache.ContainsKey(language, key))
+            if (_languageCache.ContainsKey(languageId, key))
             {
-                return _languageCache.GetKey(language, key);
+                return _languageCache.GetKey(languageId, key);
             }
 
             return "???" + key + "???";
