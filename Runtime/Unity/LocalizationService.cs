@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace Produktivkeller.SimpleLocalization.Unity
 {
-    public class LocalizationService : Singleton<LocalizationService>
+    public class LocalizationService : SingletonMonoBehaviour<LocalizationService>
     {
         private static readonly string PLAYER_PREF_KEY = "language";
 

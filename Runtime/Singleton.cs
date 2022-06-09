@@ -1,26 +1,19 @@
-using UnityEngine;
+using System;
 
 namespace Produktivkeller.SimpleLocalization
 {
-    public abstract class Singleton<T> : MonoBehaviour where T : Component
+    public abstract class Singleton<T> where T : class
     {
-        public static T Instance { get; private set; }
+        public string Value { get; set; }
+
+        private static readonly Lazy<T> PrivateInstance =
+            new Lazy<T>(() => Activator.CreateInstance(typeof(T), true) as T);
+
+        public static T Instance
+        {
+            get => PrivateInstance.Value;
+        }
 
         protected abstract void Initialize();
-
-        public virtual void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                Instance = this as T;
-                transform.SetParent(null);
-                DontDestroyOnLoad(this);
-                Initialize(); 
-            }
-        }
     }
 }
