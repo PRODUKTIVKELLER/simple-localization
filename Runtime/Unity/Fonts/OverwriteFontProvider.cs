@@ -35,7 +35,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Fonts
             }
         }
 
-        internal OverwriteFont GetOverwriteFont(LanguageId languageId)
+        private OverwriteFont GetOverwriteFont(LanguageId languageId)
         {
             if (!_overwriteFonts.ContainsKey(languageId))
             {
