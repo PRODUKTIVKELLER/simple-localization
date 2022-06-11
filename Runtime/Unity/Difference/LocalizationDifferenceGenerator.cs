@@ -42,6 +42,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
             {
                 fileInfos = directoryInfo
                             .GetFiles()
+                            .Where(f => !f.Name.EndsWith(".meta"))
                             .ToList()
                             .OrderByDescending(f => f.Name).ToList();
             }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using ExcelDataReader;
+using ClosedXML.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLogging;
@@ -13,11 +13,10 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
         private LanguageCache _languageCache;
 
-        public void Parse(IExcelDataReader excelDataReader)
+        public void Parse(IXLWorksheet xlWorksheet)
         {
             InitCache();
-            IgnoreHeaderRows(excelDataReader);
-            LoadKeysAndLocalizations(excelDataReader);
+            LoadKeysAndLocalizations(xlWorksheet);
         }
 
         public LanguageCache RetrieveLanguageCache()
@@ -35,22 +34,14 @@ namespace Produktivkeller.SimpleLocalization.Excel
             }
         }
 
-        private void IgnoreHeaderRows(IExcelDataReader excelDataReader)
-        {
-            excelDataReader.Read();
-            excelDataReader.Read();
-        }
-
-        private void LoadKeysAndLocalizations(IExcelDataReader excelDataReader)
+        private void LoadKeysAndLocalizations(IXLWorksheet xlWorksheet)
         {
             List<string> warnings = new List<string>();
             int          count    = 0;
 
-            for (int i = 0; i < excelDataReader.RowCount; i++)
+            for (int row = 3; row <= xlWorksheet.LastRowUsed().RowNumber(); row++)
             {
-                excelDataReader.Read();
-
-                string key = excelDataReader.GetString(0);
+                string key = xlWorksheet.Cell(row, 1).GetString();
 
                 if (string.IsNullOrEmpty(key))
                 {
@@ -60,7 +51,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
                 count++;
                 key = key.Trim();
 
-                ProcessRow(excelDataReader, warnings, key);
+                ProcessRow(xlWorksheet, warnings, key, row);
             }
 
             Log.Debug("Found {} entries in configuration file.", count);
@@ -71,12 +62,12 @@ namespace Produktivkeller.SimpleLocalization.Excel
             }
         }
 
-        private void ProcessRow(IExcelDataReader excelDataReader, List<string> warnings, string key)
+        private void ProcessRow(IXLWorksheet xlWorksheet, List<string> warnings, string key, int row)
         {
-            int column = 1;
+            int column = 2;
             foreach (LanguageId languageId in ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds)
             {
-                string translation = excelDataReader.GetString(column);
+                string translation = xlWorksheet.Cell(row, column).GetString();
 
                 if (string.IsNullOrEmpty(translation))
                 {
