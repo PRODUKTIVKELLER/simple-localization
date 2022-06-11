@@ -10,28 +10,21 @@ using UnityEngine.Networking;
 
 namespace Produktivkeller.SimpleLocalization.Excel
 {
-    internal static class ConfigurationLoader
+    internal static class LocalizationLoader
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public static LanguageCache LoadConfigurationAndBuildLanguageCache()
+        internal static LanguageCache LoadConfigurationAndBuildLanguageCache(string path)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-#if UNITY_EDITOR_OSX
-            Log.Debug("Adjusted path to configuration for OS X.");
-            string pathToConfiguration = "File://" +Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
-#else
-            string pathToConfiguration = Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
-#endif
-
-            UnityWebRequest unityWebRequest = UnityWebRequest.Get(pathToConfiguration);
+            UnityWebRequest unityWebRequest = UnityWebRequest.Get(path);
             unityWebRequest.SendWebRequest();
             while (!unityWebRequest.isDone)
             {
                 if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError || unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    Log.Debug("Could not load file at: {}. Error: {}", pathToConfiguration, unityWebRequest.error);
+                    Log.Debug("Could not load file at: {}. Error: {}", path, unityWebRequest.error);
                     break;
                 }
             }
@@ -62,6 +55,24 @@ namespace Produktivkeller.SimpleLocalization.Excel
             }
 
             return languageCache;
+        }
+
+        internal static LanguageCache LoadConfigurationAndBuildLanguageCache()
+        {
+            return LoadConfigurationAndBuildLanguageCache(GetConfigurationPath());
+        }
+
+        internal static string GetConfigurationPath()
+        {
+            string pathToConfiguration;
+            
+#if UNITY_EDITOR_OSX
+            Log.Debug("Adjusted path to configuration for OS X.");
+            pathToConfiguration = "File://" +Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
+#else
+            pathToConfiguration = Path.Combine(Application.streamingAssetsPath, "configuration.xlsx");
+#endif
+            return pathToConfiguration;
         }
     }
 }

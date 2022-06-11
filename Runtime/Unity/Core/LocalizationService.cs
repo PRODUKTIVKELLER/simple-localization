@@ -6,6 +6,7 @@ using Produktivkeller.SimpleLocalization.Code_Patterns;
 using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Components;
 using Produktivkeller.SimpleLocalization.Unity.Data;
+using Produktivkeller.SimpleLocalization.Unity.Difference;
 using Produktivkeller.SimpleLocalization.Unity.Extensions;
 using Produktivkeller.SimpleLocalization.Unity.Fonts;
 using Produktivkeller.SimpleLogging;
@@ -60,7 +61,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                 CurrentLanguageId = languageId;
             }
 
-            LanguageCache languageCache = ConfigurationLoader.LoadConfigurationAndBuildLanguageCache();
+            LanguageCache languageCache = LocalizationLoader.LoadConfigurationAndBuildLanguageCache();
             _localizationStorage = new LocalizationStorage(languageCache);
 
             InformReceivers();
@@ -344,6 +345,12 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                                            .Select(t => t.gameObject.BuildFullName())
                                            .Aggregate((a, b) => a + "\n" + b);
             Log.Warn("The following text elements are not localized:\n\n" + fullNamesWithNewLines + "\n");
+        }
+
+        [ContextMenu("Generate localization difference")]
+        private void GenerateLocalizationDifference()
+        {
+            new LocalizationDifferenceGenerator().Generate();
         }
 
         #endregion

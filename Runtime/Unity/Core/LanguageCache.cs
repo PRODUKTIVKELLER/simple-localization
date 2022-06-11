@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Core
@@ -30,6 +31,21 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         public string GetKey(LanguageId languageId, string key)
         {
             return _languageCache[languageId][key];
+        }
+
+        public List<string> FindAllKeys()
+        {
+            List<string> keys = new List<string>();
+            
+            foreach (KeyValuePair<LanguageId, Dictionary<string, string>> languageColumn in _languageCache)
+            {
+                foreach (KeyValuePair<string, string> entry in languageColumn.Value)
+                {
+                    keys.Add(entry.Key);
+                } 
+            }
+
+            return keys.Distinct().OrderBy(k => k).ToList();
         }
     }
 }
