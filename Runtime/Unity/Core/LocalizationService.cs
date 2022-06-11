@@ -86,11 +86,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             return LanguageId.None;
 #endif
 
-            string steamLanguage = "";
-
 #if STEAMWORKS_NET
-            steamLanguage = SteamApps.GetCurrentGameLanguage();
-#endif
+            string steamLanguage = SteamApps.GetCurrentGameLanguage();
 
             // https://partner.steamgames.com/doc/store/localization#supported_languages
             switch (steamLanguage)
@@ -187,6 +184,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             }
 
             return LanguageId.None;
+#endif
+            
         }
 
         private void OnEnable()
