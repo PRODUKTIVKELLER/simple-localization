@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Data
 {
-    internal class ConfigurationProvider : Singleton<ConfigurationProvider>
+    public class SimpleLocalizationConfigurationProvider : Singleton<SimpleLocalizationConfigurationProvider>
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 

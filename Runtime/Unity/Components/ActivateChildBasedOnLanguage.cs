@@ -56,7 +56,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Components
 
             for (int i = 0; i < languageIds.Count; i++)
             {
-                bool active = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId == languageIds[i];
+                bool active = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId == languageIds[i];
                 children[i].SetActive(active);
             }
         }

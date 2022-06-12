@@ -16,12 +16,12 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
         {
             LanguageId languageId = MakeSuggestion();
 
-            if (ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Contains(languageId))
+            if (SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Contains(languageId))
             {
                 return languageId;
             }
 
-            if (ConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
+            if (SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
             {
                 Log.Debug("Recognized language {} but it is not configured in the 'Simple Localization' configuration.", languageId);
             }

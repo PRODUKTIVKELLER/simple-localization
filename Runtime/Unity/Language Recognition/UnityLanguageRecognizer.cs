@@ -7,7 +7,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
     {
         protected override LanguageId MakeSuggestion()
         {
-            if (ConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
+            if (SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
             {
                 Log.Debug("Trying to resolve language with the Unity API. Unity system language: {}", Application.systemLanguage);
             }

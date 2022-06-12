@@ -28,7 +28,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
         {
             _languageCache = new LanguageCache();
 
-            foreach (LanguageId languageId in ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds)
+            foreach (LanguageId languageId in SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds)
             {
                 _languageCache.AddLanguage(languageId);
             }
@@ -65,7 +65,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
         private void ProcessRow(IXLWorksheet xlWorksheet, List<string> warnings, string key, int row)
         {
             int column = 2;
-            foreach (LanguageId languageId in ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds)
+            foreach (LanguageId languageId in SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds)
             {
                 string translation = xlWorksheet.Cell(row, column).GetString();
 

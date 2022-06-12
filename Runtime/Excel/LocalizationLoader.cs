@@ -13,7 +13,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
             using XLWorkbook xlWorkbook = new XLWorkbook(path);
 
             LocalizationParser localizationParser = new LocalizationParser();
-            localizationParser.Parse(xlWorkbook.Worksheet(ConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName));
+            localizationParser.Parse(xlWorkbook.Worksheet(SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName));
             LanguageCache languageCache = localizationParser.RetrieveLanguageCache();
 
             return languageCache;

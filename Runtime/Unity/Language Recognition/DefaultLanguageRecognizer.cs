@@ -6,9 +6,9 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
     {
         protected override LanguageId MakeSuggestion()
         {
-            LanguageId languageId = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
+            LanguageId languageId = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
 
-            if (ConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
+            if (SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
             {
                 Log.Debug("Using default language: {}", languageId);
             }

@@ -61,7 +61,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
 
         private static string GetPathForDifferenceFiles()
         {
-            return Application.dataPath + Path.DirectorySeparatorChar + ConfigurationProvider.Instance.SimpleLocalizationConfiguration.pathForDifferenceFiles;
+            return Application.dataPath + Path.DirectorySeparatorChar + SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.pathForDifferenceFiles;
         }
 
         private LanguageCache LoadCurrentLocalizationFile()
@@ -113,14 +113,14 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         private void AddWorksheets(XLWorkbook xlWorkbook)
         {
             using XLWorkbook currentConfigurationWorkbook = new XLWorkbook(LocalizationLoader.GetConfigurationPath());
-            IXLWorksheet xlWorksheet = currentConfigurationWorkbook.Worksheet(ConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName);
+            IXLWorksheet xlWorksheet = currentConfigurationWorkbook.Worksheet(SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName);
 
-            xlWorksheet.CopyTo(xlWorkbook, ConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName);
+            xlWorksheet.CopyTo(xlWorkbook, SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName);
             IXLWorksheet differenceWorksheet = xlWorksheet.CopyTo(xlWorkbook, "Difference");
 
             for (int row = 3; row <= differenceWorksheet.LastRowUsed().RowNumber(); row++)
             {
-                for (int column = 1; column <= ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Count + 1; column++)
+                for (int column = 1; column <= SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Count + 1; column++)
                 {
                     differenceWorksheet.Cell(row, column).Value = null;
                 }
@@ -131,7 +131,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
 
         private void AddDifferenceEntries(IXLWorksheet xlWorksheet)
         {
-            List<LanguageId> sourceLanguageIds = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.sourceLanguageIds;
+            List<LanguageId> sourceLanguageIds = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.sourceLanguageIds;
 
             foreach (string currentKey in _currentKeys)
             {
@@ -161,8 +161,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         {
             _differenceContainsEntries = true;
             
-            List<LanguageId> sourceLanguageIds = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.sourceLanguageIds;
-            List<LanguageId> languageIds       = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds;
+            List<LanguageId> sourceLanguageIds = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.sourceLanguageIds;
+            List<LanguageId> languageIds       = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds;
 
             int row = Mathf.Max(xlWorksheet.LastRowUsed().RowNumber() + 1, 3);
 
