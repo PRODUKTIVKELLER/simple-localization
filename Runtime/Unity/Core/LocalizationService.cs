@@ -113,6 +113,11 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         {
             foreach (ILocalized localized in FindReceivers())
             {
+                if (localized is LocalizedIgnore)
+                {
+                    continue;
+                }
+                
                 UpdateFont(localized.gameObject);
                 localized.OnLanguageHasChanged();
             }
