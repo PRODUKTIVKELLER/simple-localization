@@ -17,8 +17,12 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             {
                 return _languageCache.GetKey(languageId, key);
             }
-
+            
+            #if IS_PRODUCTION
+            return _languageCache.GetKey(ConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId, key);
+            #else
             return "???" + key + "???";
+            #endif
         }
     }
 }

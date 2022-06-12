@@ -9,13 +9,11 @@ using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLocalization.Unity.Difference;
 using Produktivkeller.SimpleLocalization.Unity.Extensions;
 using Produktivkeller.SimpleLocalization.Unity.Fonts;
+using Produktivkeller.SimpleLocalization.Unity.Language_Recognition;
 using Produktivkeller.SimpleLogging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-#if STEAMWORKS_NET
-using Steamworks;
-#endif
 
 namespace Produktivkeller.SimpleLocalization.Unity.Core
 {
@@ -40,22 +38,21 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             }
             else
             {
-                LanguageId languageId = ResolveLanguageFromSteam();
+                LanguageId languageId = LanguageId.None;
 
-                if (languageId == LanguageId.None)
+                foreach (LanguageRecognizer languageRecognizer in GetComponents<LanguageRecognizer>().ToList().OrderByDescending(l => l.GetPriority()))
                 {
-                    languageId = ResolveLanguageFromUnity();
+                    languageId = languageRecognizer.Recognize();
+
+                    if (languageId != LanguageId.None)
+                    {
+                        break;
+                    }
                 }
 
-                if (languageId == LanguageId.None)
+                foreach (LanguageRecognitionPostProcessor languageRecognitionPostProcessor in GetComponents<LanguageRecognitionPostProcessor>())
                 {
-                    languageId = ConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
-                }
-
-                // TODO: Make mapping configurable by user.
-                if (languageId == LanguageId.Chinese || languageId == LanguageId.ChineseSimplified || languageId == LanguageId.ChineseTraditional)
-                {
-                    languageId = LanguageId.ChineseSimplified;
+                    languageId = languageRecognitionPostProcessor.Process(languageId);
                 }
 
                 CurrentLanguageId = languageId;
@@ -65,127 +62,6 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             _localizationStorage = new LocalizationStorage(languageCache);
 
             InformReceivers();
-        }
-
-        private LanguageId ResolveLanguageFromUnity()
-        {
-            Log.Debug("Trying to resolve language with the Unity API. Unity system language: {}", Application.systemLanguage);
-            LanguageId languageId = (LanguageId)((int)Application.systemLanguage + 1);
-
-            if (ConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Contains(languageId))
-            {
-                return languageId;
-            }
-
-            return LanguageId.None;
-        }
-
-        private LanguageId ResolveLanguageFromSteam()
-        {
-#if !STEAMWORKS_NET
-            return LanguageId.None;
-#endif
-
-#if STEAMWORKS_NET
-            string steamLanguage = SteamApps.GetCurrentGameLanguage();
-
-            // https://partner.steamgames.com/doc/store/localization#supported_languages
-            switch (steamLanguage)
-            {
-                case "arabic":
-                    return LanguageId.Arabic;
-                    break;
-                case "bulgarian":
-                    return LanguageId.Bulgarian;
-                    break;
-                case "schinese":
-                    return LanguageId.ChineseSimplified;
-                    break;
-                case "tchinese":
-                    return LanguageId.ChineseTraditional;
-                    break;
-                case "czech":
-                    return LanguageId.Czech;
-                    break;
-                case "danish":
-                    return LanguageId.Danish;
-                    break;
-                case "dutch":
-                    return LanguageId.Dutch;
-                    break;
-                case "english":
-                    return LanguageId.English;
-                    break;
-                case "finnish":
-                    return LanguageId.Finnish;
-                    break;
-                case "french":
-                    return LanguageId.French;
-                    break;
-                case "german":
-                    return LanguageId.German;
-                    break;
-                case "greek":
-                    return LanguageId.Greek;
-                    break;
-                case "hungarian":
-                    return LanguageId.Hungarian;
-                    break;
-                case "italian":
-                    return LanguageId.Italian;
-                    break;
-                case "japanese":
-                    return LanguageId.Japanese;
-                    break;
-                case "koreana":
-                    return LanguageId.Korean;
-                    break;
-                case "norwegian":
-                    return LanguageId.Norwegian;
-                    break;
-                case "polish":
-                    return LanguageId.Polish;
-                    break;
-                case "portuguese":
-                    return LanguageId.Portuguese;
-                    break;
-                case "brazilian":
-                    return LanguageId.Brazilian;
-                    break;
-                case "romanian":
-                    return LanguageId.Romanian;
-                    break;
-                case "russian":
-                    return LanguageId.Russian;
-                    break;
-                case "spanish":
-                    return LanguageId.Spanish;
-                    break;
-                case "latam":
-                    return LanguageId.Spanish;
-                    break;
-                case "swedish":
-                    return LanguageId.Swedish;
-                    break;
-                case "thai":
-                    return LanguageId.Thai;
-                    break;
-                case "turkish":
-                    return LanguageId.Turkish;
-                    break;
-                case "ukrainian":
-                    return LanguageId.Ukrainian;
-                    break;
-                case "vietnamese":
-                    return LanguageId.Vietnamese;
-                    break;
-                default:
-                    break;
-            }
-
-            return LanguageId.None;
-#endif
-            
         }
 
         private void OnEnable()

@@ -1,6 +1,6 @@
 {
   "name": "com.produktivkeller.simple-localization",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "displayName": "Simple Localization",
   "description": "A light-weight tool to add localization to your Unity projects and manage it in an Excel sheet.",
   "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localization",
@@ -20,9 +20,19 @@
   },
   "samples": [
     {
-      "displayName": "Configuration File",
-      "description": "Contains a basic configuration file that you can extend for your project.",
+      "displayName": "Excel",
+      "description": "Contains a basic 'Excel' configuration file that you can extend for your project.",
+      "path": "Samples~/Excel"
+    },
+    {
+      "displayName": "Configuration",
+      "description": "Contains a basic 'Simple Localization' configuration object.",
       "path": "Samples~/Configuration"
+    },
+    {
+      "displayName": "Language Recognition",
+      "description": "Contains example scripts for overriding the language recognition.",
+      "path": "Samples~/Language Recognition"
     }
   ]
 }

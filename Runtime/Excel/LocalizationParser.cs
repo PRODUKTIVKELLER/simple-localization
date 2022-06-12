@@ -58,7 +58,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 
             if (warnings.Count > 0)
             {
-                Log.Warn("Encountered problems while reading configuration file:\n\n- " + string.Join("\n- ", warnings));
+                Log.Warn("Encountered problems while reading configuration file:\n\n- " + string.Join("\n- ", warnings) + "\n");
             }
         }
 

@@ -11,5 +11,6 @@ namespace Produktivkeller.SimpleLocalization.Unity.Data
         public List<LanguageId> sourceLanguageIds      = new List<LanguageId> { LanguageId.German, LanguageId.English };
         public string           excelTableName         = "Localization";
         public string           pathForDifferenceFiles = "Simple Localization/Localization Differences";
+        public bool             showDebugLogs          = true;
     }
 }
