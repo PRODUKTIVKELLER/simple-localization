@@ -19,6 +19,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
 #if STEAMWORKS_NET
             if (!SteamManager.Initialized) {
                 Log.Debug("Can't resolve language with the Steam API as Steam is not initialized, yet.");
+                return LanguageId.None;
             }
 
             string steamLanguage = SteamApps.GetCurrentGameLanguage();

@@ -34,9 +34,17 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
 
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
-                CurrentLanguageId = (LanguageId)Enum.Parse(typeof(LanguageId), PlayerPrefs.GetString(PLAYER_PREF_KEY));
+                try
+                {
+                    CurrentLanguageId = (LanguageId)Enum.Parse(typeof(LanguageId), PlayerPrefs.GetString(PLAYER_PREF_KEY));
+                }
+                catch (ArgumentException _)
+                {
+                    // ignored
+                }
             }
-            else
+
+            if (CurrentLanguageId == LanguageId.None)
             {
                 LanguageId languageId = LanguageId.None;
 
@@ -117,7 +125,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                 {
                     continue;
                 }
-                
+
                 UpdateFont(localized.gameObject);
                 localized.OnLanguageHasChanged();
             }
