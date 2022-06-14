@@ -10,7 +10,8 @@ namespace Produktivkeller.SimpleLocalization.Excel
     {
         internal static LanguageCache LoadConfigurationAndBuildLanguageCache(string path)
         {
-            using XLWorkbook xlWorkbook = new XLWorkbook(path);
+            FileStream       fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using XLWorkbook xlWorkbook = new XLWorkbook(fileStream);
 
             LocalizationParser localizationParser = new LocalizationParser();
             localizationParser.Parse(xlWorkbook.Worksheet(SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName));
