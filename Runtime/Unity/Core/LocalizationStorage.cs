@@ -19,7 +19,12 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             }
             
             #if IS_PRODUCTION
-            return _languageCache.GetKey(ConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId, key);
+            LanguageId defaultLanguageId = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
+
+            if (_languageCache.ContainsKey(defaultLanguageId, key))
+            {
+                return _languageCache.GetKey(defaultLanguageId, key);
+            }
             #else
             return "???" + key + "???";
             #endif
