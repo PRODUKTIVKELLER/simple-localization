@@ -17,17 +17,17 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             {
                 return _languageCache.GetKey(languageId, key);
             }
-            
-            #if IS_PRODUCTION
+
+#if IS_PRODUCTION
             LanguageId defaultLanguageId = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
 
             if (_languageCache.ContainsKey(defaultLanguageId, key))
             {
                 return _languageCache.GetKey(defaultLanguageId, key);
             }
-            #else
+#endif
+
             return "???" + key + "???";
-            #endif
         }
     }
 }
