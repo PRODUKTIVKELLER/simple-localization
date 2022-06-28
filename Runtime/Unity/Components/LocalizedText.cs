@@ -30,7 +30,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Components
         {
             if (_text == null)
             {
-                _text = GetComponent<TextMeshProUGUI>();
+                _text = GetComponent<TMP_Text>();
             }
 
             // Check is required because "OnEnable" can be called before LanguageService is initialized.
