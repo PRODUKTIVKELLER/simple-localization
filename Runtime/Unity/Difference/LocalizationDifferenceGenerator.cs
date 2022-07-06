@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Difference
 {
-    public class LocalizationDifferenceGenerator
+    public class LocalizationDifferenceGenerator: AbstractLocalizationProcess
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -38,31 +38,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
 
         private LanguageCache LoadLatestDifferenceFile()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(GetPathForDifferenceFiles());
-
-            List<FileInfo> fileInfos = new List<FileInfo>();
-
-            if (directoryInfo.Exists)
-            {
-                fileInfos = directoryInfo
-                            .GetFiles()
-                            .Where(f => !f.Name.EndsWith(".meta"))
-                            .ToList()
-                            .OrderByDescending(f => f.Name).ToList();
-            }
-            else
-            {
-                Directory.CreateDirectory(directoryInfo.FullName);
-            }
-
-            if (fileInfos.Count == 0)
-            {
-                Log.Debug("No difference files found.");
-                return null;
-            }
-
-            Log.Debug("Found difference file {}.", fileInfos[0].FullName);
-            return LocalizationLoader.LoadConfigurationAndBuildLanguageCache(fileInfos[0].FullName);
+            return LoadLatestFileInDirectory(GetPathForDifferenceFiles());
         }
 
         private static string GetPathForDifferenceFiles()

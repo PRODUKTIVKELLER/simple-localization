@@ -8,13 +8,18 @@ namespace Produktivkeller.SimpleLocalization.Excel
 {
     internal static class LocalizationLoader
     {
-        internal static LanguageCache LoadConfigurationAndBuildLanguageCache(string path)
+        internal static LanguageCache LoadConfigurationAndBuildLanguageCache(string path, string worksheet = null)
         {
             FileStream       fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             using XLWorkbook xlWorkbook = new XLWorkbook(fileStream);
 
+            if (worksheet == null)
+            {
+                worksheet = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName;
+            }
+            
             LocalizationParser localizationParser = new LocalizationParser();
-            localizationParser.Parse(xlWorkbook.Worksheet(SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName));
+            localizationParser.Parse(xlWorkbook.Worksheet(worksheet));
             LanguageCache languageCache = localizationParser.RetrieveLanguageCache();
 
             return languageCache;

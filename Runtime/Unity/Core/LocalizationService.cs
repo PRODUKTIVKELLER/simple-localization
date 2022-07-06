@@ -264,6 +264,12 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             new LocalizationDifferenceGenerator().Generate();
         }
 
+        [ContextMenu("Import latest finished localization")]
+        private void ImportLatestFinishedLocalization()
+        {
+            new FinishedLocalizationImporter().ImportLatest();
+        }
+
         #endregion
     }
 }
