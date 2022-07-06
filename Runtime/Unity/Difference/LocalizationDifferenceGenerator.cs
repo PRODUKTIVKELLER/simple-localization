@@ -24,11 +24,15 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
 
         public void Generate()
         {
-            _currentLanguageCache          = LoadCurrentLocalizationFile();
+            Log.Debug("Loading localization file ...");
+            _currentLanguageCache = LoadCurrentLocalizationFile();
+
+            Log.Debug("Loading latest difference file ...");
             _latestDifferenceLanguageCache = LoadLatestDifferenceFile();
 
+            Log.Debug("Building new difference file ...");
             BuildDifferenceFile();
-            
+
             Log.Debug("Finished generating localization difference.");
         }
 
@@ -53,15 +57,18 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
 
             if (fileInfos.Count == 0)
             {
+                Log.Debug("No difference files found.");
                 return null;
             }
 
+            Log.Debug("Found difference file {}.", fileInfos[0].FullName);
             return LocalizationLoader.LoadConfigurationAndBuildLanguageCache(fileInfos[0].FullName);
         }
 
         private static string GetPathForDifferenceFiles()
         {
-            return Application.dataPath + Path.DirectorySeparatorChar + SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.pathForDifferenceFiles;
+            return Application.dataPath + Path.DirectorySeparatorChar +
+                   SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.pathForDifferenceFiles;
         }
 
         private LanguageCache LoadCurrentLocalizationFile()
@@ -104,7 +111,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
                 Log.Debug("No differences found.");
                 return;
             }
-            
+
             string path = GetPathForDifferenceFiles() + Path.DirectorySeparatorChar + $"Localization Difference - {DateTime.Now:yy-MM-dd HH-mm-ss}.xlsx";
             xlWorkbook.SaveAs(path);
             Log.Debug("Saved new localization difference: {}", path);
@@ -113,20 +120,55 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         private void AddWorksheets(XLWorkbook xlWorkbook)
         {
             using XLWorkbook currentConfigurationWorkbook = new XLWorkbook(LocalizationLoader.GetConfigurationPath());
-            IXLWorksheet xlWorksheet = currentConfigurationWorkbook.Worksheet(SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName);
+            string           worksheetName                = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName;
+            IXLWorksheet xlWorksheet = currentConfigurationWorkbook.Worksheet(worksheetName);
+            CopyWorksheet(xlWorksheet, xlWorkbook, worksheetName);
+            IXLWorksheet differenceWorksheet = CopyWorksheet(xlWorksheet, xlWorkbook, "Difference", true);
 
-            xlWorksheet.CopyTo(xlWorkbook, SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName);
-            IXLWorksheet differenceWorksheet = xlWorksheet.CopyTo(xlWorkbook, "Difference");
+            AddDifferenceEntries(differenceWorksheet);
+        }
 
-            for (int row = 3; row <= differenceWorksheet.LastRowUsed().RowNumber(); row++)
+        /// <summary>
+        /// This method creates a new worksheet in a workbook and copies the content of a specified worksheet.
+        /// It freezes the first row and creates a thin border at the bottom of the first row.
+        ///
+        /// There is an IXLWorksheet.CopyTo(...) method, but it takes around 30 seconds to complete. This method only takes a few seconds.
+        /// </summary>
+        /// <param name="sourceWorksheet">The worksheet that will be copied.</param>
+        /// <param name="targetWorkbook">The workbook in which the new worksheet will be created.</param>
+        /// <param name="worksheetName">The name of the new worksheet.</param>
+        /// <param name="onlyHeader">If true, only the first line will be copied.</param>
+        /// <returns></returns>
+        private IXLWorksheet CopyWorksheet(IXLWorksheet sourceWorksheet, XLWorkbook targetWorkbook, string worksheetName, bool onlyHeader = false)
+        {
+            IXLWorksheet newWorksheet = targetWorkbook.AddWorksheet(worksheetName);
+
+            int lastRow    = onlyHeader ? 1 : sourceWorksheet.LastRowUsed().RowNumber();
+            int lastColumn = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Count + 1;
+
+            for (int column = 1; column <= lastColumn; column++)
             {
-                for (int column = 1; column <= SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Count + 1; column++)
+                newWorksheet.Column(column).Width = sourceWorksheet.Column(column).Width;
+            }
+
+            for (int row = 1; row <= lastRow; row++)
+            {
+                for (int column = 1; column <= lastColumn; column++)
                 {
-                    differenceWorksheet.Cell(row, column).Value = null;
+                    newWorksheet.Cell(row, column).Value = sourceWorksheet.Cell(row, column);
+
+                    if (row == 1)
+                    {
+                        newWorksheet.Cell(row, column).Style.Font.SetBold();
+                        newWorksheet.Cell(row, column).Style.Border.BottomBorder      = XLBorderStyleValues.Hair;
+                        newWorksheet.Cell(row, column).Style.Border.BottomBorderColor = XLColor.Black;
+                    }
                 }
             }
 
-            AddDifferenceEntries(differenceWorksheet);
+            newWorksheet.SheetView.FreezeRows(1);
+
+            return newWorksheet;
         }
 
         private void AddDifferenceEntries(IXLWorksheet xlWorksheet)
@@ -160,7 +202,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         private void AddToDiff(string key, IXLWorksheet xlWorksheet)
         {
             _differenceContainsEntries = true;
-            
+
             List<LanguageId> sourceLanguageIds = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.sourceLanguageIds;
             List<LanguageId> languageIds       = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds;
 
