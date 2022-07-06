@@ -69,7 +69,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
                         if (!string.IsNullOrWhiteSpace(localization))
                         {
                             xlWorksheet.Cell(row, column).Value = localization;
-                            Log.Debug("Setting localization in row {} and column {} for language {} to:\n\n{}\n.",
+                            Log.Debug("Setting localization in row {} and column {} for language {} to:\n\n{}\n",
                                       row, column, languageId, localization);
                         }
                     }
