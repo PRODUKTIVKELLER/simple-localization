@@ -10,7 +10,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
 {
     public class SteamLanguageRecognizer : LanguageRecognizer
     {
-        protected override LanguageId MakeSuggestion()
+        public override LanguageId Recognize()
         {
 #if !STEAMWORKS_NET
             return LanguageId.None;
@@ -34,6 +34,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
             {
                 case "arabic":
                     return LanguageId.Arabic;
+
                 case "bulgarian":
                     return LanguageId.Bulgarian;
                     

@@ -5,7 +5,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
 {
     public class UnityLanguageRecognizer : LanguageRecognizer
     {
-        protected override LanguageId MakeSuggestion()
+        public override LanguageId Recognize()
         {
             if (SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
             {

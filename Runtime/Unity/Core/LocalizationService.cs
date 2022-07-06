@@ -32,44 +32,67 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         {
             _defaultFontAssetsByGameObjectId = new Dictionary<int, TMP_FontAsset>();
 
-            if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
-            {
-                try
-                {
-                    CurrentLanguageId = (LanguageId)Enum.Parse(typeof(LanguageId), PlayerPrefs.GetString(PLAYER_PREF_KEY));
-                }
-                catch (ArgumentException _)
-                {
-                    // ignored
-                }
-            }
+            CurrentLanguageId = LoadLanguageIdFromPlayerPrefs();
 
             if (CurrentLanguageId == LanguageId.None)
             {
-                LanguageId languageId = LanguageId.None;
-
-                foreach (LanguageRecognizer languageRecognizer in GetComponents<LanguageRecognizer>().ToList().OrderByDescending(l => l.GetPriority()))
-                {
-                    languageId = languageRecognizer.Recognize();
-
-                    if (languageId != LanguageId.None)
-                    {
-                        break;
-                    }
-                }
-
-                foreach (LanguageRecognitionPostProcessor languageRecognitionPostProcessor in GetComponents<LanguageRecognitionPostProcessor>())
-                {
-                    languageId = languageRecognitionPostProcessor.Process(languageId);
-                }
-
-                CurrentLanguageId = languageId;
+                CurrentLanguageId = DetermineLanguageIdFromProviders();
             }
 
             LanguageCache languageCache = LocalizationLoader.LoadConfigurationAndBuildLanguageCache();
             _localizationStorage = new LocalizationStorage(languageCache);
 
             InformReceivers();
+        }
+
+        private LanguageId LoadLanguageIdFromPlayerPrefs()
+        {
+            if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
+            {
+                try
+                {
+                    return (LanguageId)Enum.Parse(typeof(LanguageId), PlayerPrefs.GetString(PLAYER_PREF_KEY));
+                }
+                catch (ArgumentException)
+                {
+                    // ignored
+                }
+            }
+
+            return LanguageId.None;
+        }
+
+        private LanguageId DetermineLanguageIdFromProviders()
+        {
+            LanguageId languageId = LanguageId.None;
+
+            foreach (LanguageRecognizer languageRecognizer in GetComponents<LanguageRecognizer>().ToList().OrderByDescending(l => l.GetPriority()))
+            {
+                languageId = languageRecognizer.Recognize();
+
+                if (languageId != LanguageId.None)
+                {
+                    break;
+                }
+            }
+
+            foreach (LanguageRecognitionPostProcessor languageRecognitionPostProcessor in GetComponents<LanguageRecognitionPostProcessor>())
+            {
+                languageId = languageRecognitionPostProcessor.Process(languageId);
+            }
+
+            if (!SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.languageIds.Contains(languageId))
+            {
+                if (SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.showDebugLogs)
+                {
+                    Log.Debug("Recognized language {} but it is not configured in the 'Simple Localization' configuration. " +
+                              "Using default language instead.", languageId);
+                }
+
+                languageId = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
+            }
+
+            return languageId;
         }
 
         private void OnEnable()

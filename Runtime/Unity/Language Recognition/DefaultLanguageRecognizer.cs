@@ -4,7 +4,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Language_Recognition
 {
     public class DefaultLanguageRecognizer : LanguageRecognizer
     {
-        protected override LanguageId MakeSuggestion()
+        public override LanguageId Recognize()
         {
             LanguageId languageId = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.defaultLanguageId;
 
