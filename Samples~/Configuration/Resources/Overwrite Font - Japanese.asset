@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02519d651da2e304c8b5b23be15610da, type: 3}
+  m_Name: Overwrite Font - Japanese
+  m_EditorClassIdentifier: 
+  languageId: 23
+  namedFonts:
+  - name: Bold - With Shadow
+    fontAsset: {fileID: 11400000, guid: 0be0d8521ca235e488cfdb27a9d27e4c, type: 2}
+  - name: Bold
+    fontAsset: {fileID: 11400000, guid: 0774eb851d3326942acb3a875e0d1868, type: 2}
+  - name: Extra Light - With Shadow
+    fontAsset: {fileID: 11400000, guid: 009161df7dfb6fa47895f494a9ad6a8d, type: 2}
+  - name: Extra Light
+    fontAsset: {fileID: 11400000, guid: 7af027aeedc75a846997fd6a89bbbbc2, type: 2}
+  - name: Light - With Shadow
+    fontAsset: {fileID: 11400000, guid: 56158c554ffd9394184d9e13eeedb0f5, type: 2}
+  - name: Light
+    fontAsset: {fileID: 11400000, guid: b6c70f81d24fc3345a09347f36cec918, type: 2}
+  - name: Regular - With Shadow
+    fontAsset: {fileID: 11400000, guid: a114a79fb15276f43951900bada7ce01, type: 2}
+  - name: Regular
+    fontAsset: {fileID: 11400000, guid: cbf52651a7dcfbc4d80216f9a9d58d79, type: 2}
+  - name: Semi Bold - With Shadow
+    fontAsset: {fileID: 11400000, guid: eb14b6aa81aa4a74c952f81d7f3a090e, type: 2}
+  - name: Semi Bold
+    fontAsset: {fileID: 11400000, guid: 813443fc3c63061449b0895f7336d53a, type: 2}
+  - name: Semi Bold Italic - With Shadow
+    fontAsset: {fileID: 11400000, guid: 813443fc3c63061449b0895f7336d53a, type: 2}
+  - name: Semi Bold Italic
+    fontAsset: {fileID: 11400000, guid: 813443fc3c63061449b0895f7336d53a, type: 2}

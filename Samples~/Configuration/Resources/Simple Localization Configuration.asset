@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Simple Localization Configuration
   m_EditorClassIdentifier: 
   defaultLanguageId: 11
-  languageIds: 100000000b0000002900000018000000
+  languageIds: 100000000b000000290000001800000017000000
   sourceLanguageIds: 100000000b000000
   excelTableName: Localization
+  pathForDifferenceFiles: Simple Localization/Localization Differences
+  pathForFinishedLocalizations: Simple Localization/Finished Localizations
+  showDebugLogs: 1
