@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Produktivkeller.SimpleLocalization.Code_Patterns;
+using Produktivkeller.SimpleCodePatterns.Singleton;
 using Produktivkeller.SimpleLogging;
 using UnityEngine;
 

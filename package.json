@@ -5,7 +5,8 @@
   "description": "A light-weight tool to add localization to your Unity projects and manage it in an Excel sheet.",
   "documentationUrl": "https://github.com/PRODUKTIVKELLER/simple-localization",
   "gitDependencies": {
-    "com.produktivkeller.simple-logging": "https://github.com/PRODUKTIVKELLER/simple-logging.git"
+    "com.produktivkeller.simple-logging": "https://github.com/PRODUKTIVKELLER/simple-logging.git",
+    "com.produktivkeller.simple-code-patterns": "https://github.com/PRODUKTIVKELLER/simple-code-patterns.git"
   },
   "keywords": [
     "localization",

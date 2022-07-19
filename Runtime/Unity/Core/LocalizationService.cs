@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Produktivkeller.SimpleLocalization.Code_Patterns;
+using Produktivkeller.SimpleCodePatterns.Singleton;
 using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Components;
 using Produktivkeller.SimpleLocalization.Unity.Data;

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Produktivkeller.SimpleLocalization.Code_Patterns;
+using Produktivkeller.SimpleCodePatterns.Singleton;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using TMPro;
 using UnityEngine;
