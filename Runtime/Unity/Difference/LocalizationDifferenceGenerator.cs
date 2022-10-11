@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#if UNITY_EDITOR
 using ClosedXML.Excel;
+#endif
 using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
@@ -14,6 +16,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
 {
     public class LocalizationDifferenceGenerator: AbstractLocalizationProcess
     {
+#if UNITY_EDITOR
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private LanguageCache _currentLanguageCache;
@@ -197,5 +200,6 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         {
             return _latestDifferenceLanguageCache == null;
         }
+#endif
     }
 }

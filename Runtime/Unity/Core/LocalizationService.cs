@@ -263,6 +263,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             Log.Warn("The following text elements are not localized:\n\n" + fullNamesWithNewLines + "\n");
         }
 
+#if UNITY_EDITOR
+
         [ContextMenu("Generate localization difference")]
         private void GenerateLocalizationDifference()
         {
@@ -275,6 +277,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             new FinishedLocalizationImporter().ImportLatest();
         }
 
-        #endregion
+#endif
+
+#endregion
     }
 }

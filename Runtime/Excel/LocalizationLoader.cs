@@ -1,5 +1,7 @@
 ﻿using System.IO;
+#if UNITY_EDITOR
 using ClosedXML.Excel;
+#endif
 using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using UnityEngine;
@@ -8,6 +10,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 {
     internal static class LocalizationLoader
     {
+#if UNITY_EDITOR
         internal static LanguageCache LoadConfigurationAndBuildLanguageCache(string path, string worksheet = null)
         {
             FileStream       fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -42,5 +45,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
 #endif
             return pathToConfiguration;
         }
+
+#endif
     }
 }
