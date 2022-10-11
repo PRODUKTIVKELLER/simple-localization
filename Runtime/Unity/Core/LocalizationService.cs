@@ -39,7 +39,11 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                 CurrentLanguageId = DetermineLanguageIdFromProviders();
             }
 
+#if UNITY_EDITOR
             LanguageCache languageCache = LocalizationLoader.LoadConfigurationAndBuildLanguageCache();
+#else
+            LanguageCache languageCache = Resources.Load<LanguageCacheSerializable>("LanguageCache").ToLanguageCache();
+#endif
             _localizationStorage = new LocalizationStorage(languageCache);
 
             InformReceivers();

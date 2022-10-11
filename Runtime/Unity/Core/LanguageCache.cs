@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Produktivkeller.SimpleLocalization.Unity.Data;
+using Produktivkeller.SimpleLocalization.Unity.Preprocessing;
+using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Core
 {
     public class LanguageCache
     {
-        private readonly Dictionary<LanguageId, Dictionary<string, string>> _languageCache;
+        private Dictionary<LanguageId, Dictionary<string, string>> _languageCache;
 
         public LanguageCache()
         {
@@ -46,6 +49,19 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             }
 
             return keys.Distinct().OrderBy(k => k).ToList();
+        }
+
+        public List<LanguageId> LanguageIds
+        {
+            get
+            {
+                return _languageCache.Keys.ToList();
+            }
+        }
+
+        public List<(string, string)> GetAllKeysOfLanguage(LanguageId languageId)
+        {
+            return _languageCache[languageId].Select(x => (x.Key, x.Value)).ToList();
         }
     }
 }
