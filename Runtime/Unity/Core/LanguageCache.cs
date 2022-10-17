@@ -51,12 +51,9 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             return keys.Distinct().OrderBy(k => k).ToList();
         }
 
-        public List<LanguageId> LanguageIds
+        public List<LanguageId> GetLanguageIds()
         {
-            get
-            {
-                return _languageCache.Keys.ToList();
-            }
+            return _languageCache.Keys.ToList();
         }
 
         public List<(string, string)> GetAllKeysOfLanguage(LanguageId languageId)

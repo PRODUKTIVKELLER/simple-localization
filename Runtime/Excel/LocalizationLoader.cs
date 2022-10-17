@@ -1,17 +1,15 @@
-﻿using System.IO;
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
+using System.IO;
 using ClosedXML.Excel;
-#endif
 using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Excel
 {
-    internal static class LocalizationLoader
+    public static class LocalizationLoader
     {
-#if UNITY_EDITOR
-        internal static LanguageCache LoadConfigurationAndBuildLanguageCache(string path, string worksheet = null)
+        public static LanguageCache LoadConfigurationAndBuildLanguageCache(string path, string worksheet = null)
         {
             FileStream       fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             using XLWorkbook xlWorkbook = new XLWorkbook(fileStream);
@@ -20,7 +18,7 @@ namespace Produktivkeller.SimpleLocalization.Excel
             {
                 worksheet = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName;
             }
-            
+
             LocalizationParser localizationParser = new LocalizationParser();
             localizationParser.Parse(xlWorkbook.Worksheet(worksheet));
             LanguageCache languageCache = localizationParser.RetrieveLanguageCache();
@@ -28,12 +26,12 @@ namespace Produktivkeller.SimpleLocalization.Excel
             return languageCache;
         }
 
-        internal static LanguageCache LoadConfigurationAndBuildLanguageCache()
+        public static LanguageCache LoadConfigurationAndBuildLanguageCache()
         {
             return LoadConfigurationAndBuildLanguageCache(GetConfigurationPath());
         }
 
-        internal static string GetConfigurationPath()
+        public static string GetConfigurationPath()
         {
             string pathToConfiguration;
 
@@ -45,7 +43,6 @@ namespace Produktivkeller.SimpleLocalization.Excel
 #endif
             return pathToConfiguration;
         }
-
-#endif
     }
 }
+#endif

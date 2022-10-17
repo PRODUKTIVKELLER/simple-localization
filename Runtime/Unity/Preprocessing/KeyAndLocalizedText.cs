@@ -3,9 +3,9 @@
 namespace Produktivkeller.SimpleLocalization.Unity.Preprocessing
 {
     [Serializable]
-    public class LocalizedKeyTuple
+    public class KeyAndLocalizedText
     {
-        public string localizationKey;
-        public string localizationValue;
+        public string key;
+        public string localizedText;
     }
 }

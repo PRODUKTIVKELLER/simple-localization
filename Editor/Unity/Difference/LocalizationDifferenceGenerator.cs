@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-#if UNITY_EDITOR
 using ClosedXML.Excel;
-#endif
 using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLocalization.Unity.Data;
 using Produktivkeller.SimpleLogging;
 using UnityEngine;
 
-namespace Produktivkeller.SimpleLocalization.Unity.Difference
+namespace Produktivkeller.SimpleLocalization.Editor.Unity.Difference
 {
-    public class LocalizationDifferenceGenerator: AbstractLocalizationProcess
+    public class LocalizationDifferenceGenerator : AbstractLocalizationProcess
     {
-#if UNITY_EDITOR
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private LanguageCache _currentLanguageCache;
@@ -100,7 +96,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         {
             using XLWorkbook currentConfigurationWorkbook = new XLWorkbook(LocalizationLoader.GetConfigurationPath());
             string           worksheetName                = SimpleLocalizationConfigurationProvider.Instance.SimpleLocalizationConfiguration.excelTableName;
-            IXLWorksheet xlWorksheet = currentConfigurationWorkbook.Worksheet(worksheetName);
+            IXLWorksheet     xlWorksheet                  = currentConfigurationWorkbook.Worksheet(worksheetName);
             CopyWorksheet(xlWorksheet, xlWorkbook, worksheetName);
             IXLWorksheet differenceWorksheet = CopyWorksheet(xlWorksheet, xlWorkbook, "Difference", true);
 
@@ -200,6 +196,5 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
         {
             return _latestDifferenceLanguageCache == null;
         }
-#endif
     }
 }

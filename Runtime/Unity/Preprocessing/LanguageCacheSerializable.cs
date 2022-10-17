@@ -5,29 +5,28 @@ using UnityEngine;
 
 namespace Produktivkeller.SimpleLocalization.Unity.Preprocessing
 {
-    [CreateAssetMenu(fileName = "Language Cache Serializable", menuName = "PRODUKTIVKELLER/Simple Localization/Language Cache Serializable")]
     public class LanguageCacheSerializable : ScriptableObject
     {
-        [SerializeField] public List<LanguageIdTuple> languageIdTuples;
+        [SerializeField] public List<LocalizedTextsForLanguage> localizedTextsForLanguages;
 
         public static LanguageCacheSerializable FromLanguageCache(LanguageCache languageCache)
         {
-            LanguageCacheSerializable languageCacheSerializable = new LanguageCacheSerializable();
-            languageCacheSerializable.languageIdTuples = new List<LanguageIdTuple>();
+            LanguageCacheSerializable languageCacheSerializable = CreateInstance<LanguageCacheSerializable>();
+            languageCacheSerializable.localizedTextsForLanguages = new List<LocalizedTextsForLanguage>();
 
-            List<LanguageId> languageIds = languageCache.LanguageIds;
-            for (int i = 0; i < languageIds.Count; i++)
+            List<LanguageId> languageIds = languageCache.GetLanguageIds();
+            foreach (LanguageId languageId in languageIds)
             {
-                LanguageIdTuple languageIdTuple = new LanguageIdTuple(languageIds[i]);
-                languageCacheSerializable.languageIdTuples.Add(languageIdTuple);
+                LocalizedTextsForLanguage localizedTextsForLanguage = new LocalizedTextsForLanguage(languageId);
+                languageCacheSerializable.localizedTextsForLanguages.Add(localizedTextsForLanguage);
 
-                List<(string, string)> allKeys = languageCache.GetAllKeysOfLanguage(languageIds[i]);
+                List<(string, string)> allKeys = languageCache.GetAllKeysOfLanguage(languageId);
                 for (int j = 0; j < allKeys.Count; j++)
                 {
-                    languageIdTuple.localizedKeyTouples.Add(new LocalizedKeyTuple()
+                    localizedTextsForLanguage.keyAndLocalizedTextList.Add(new KeyAndLocalizedText
                     {
-                        localizationKey   = allKeys[j].Item1,
-                        localizationValue = allKeys[j].Item2
+                        key   = allKeys[j].Item1,
+                        localizedText = allKeys[j].Item2
                     });
                 }
             }
@@ -38,16 +37,16 @@ namespace Produktivkeller.SimpleLocalization.Unity.Preprocessing
         public LanguageCache ToLanguageCache()
         {
             LanguageCache languageCache = new LanguageCache();
-            for (int i = 0; i < languageIdTuples.Count; i++)
+            
+            foreach (LocalizedTextsForLanguage languageIdTuple in localizedTextsForLanguages)
             {
-                LanguageIdTuple languageIdTuple = languageIdTuples[i];
                 languageCache.AddLanguage(languageIdTuple.languageId);
 
-                for (int j = 0; j < languageIdTuple.localizedKeyTouples.Count; j++)
+                foreach (KeyAndLocalizedText localizedKeyTuple in languageIdTuple.keyAndLocalizedTextList)
                 {
                     languageCache.AddEntry(languageIdTuple.languageId,
-                        languageIdTuple.localizedKeyTouples[j].localizationKey,
-                        languageIdTuple.localizedKeyTouples[j].localizationValue);
+                                           localizedKeyTuple.key,
+                                           localizedKeyTuple.localizedText);
                 }
             }
 

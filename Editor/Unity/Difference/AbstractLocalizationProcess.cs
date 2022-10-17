@@ -6,11 +6,10 @@ using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Core;
 using Produktivkeller.SimpleLogging;
 
-namespace Produktivkeller.SimpleLocalization.Unity.Difference
+namespace Produktivkeller.SimpleLocalization.Editor.Unity.Difference
 {
     public abstract class AbstractLocalizationProcess
     {
-#if UNITY_EDITOR
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         protected LanguageCache LoadLatestFileInDirectory(string path, string worksheet = null)
@@ -41,6 +40,5 @@ namespace Produktivkeller.SimpleLocalization.Unity.Difference
             Log.Debug("Found file {}.", fileInfos[0].FullName);
             return LocalizationLoader.LoadConfigurationAndBuildLanguageCache(fileInfos[0].FullName, worksheet);
         }
-#endif
     }
 }

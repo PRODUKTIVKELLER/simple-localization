@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Produktivkeller.SimpleCodePatterns.Singleton;
-using Produktivkeller.SimpleLocalization.Excel;
 using Produktivkeller.SimpleLocalization.Unity.Components;
 using Produktivkeller.SimpleLocalization.Unity.Data;
-using Produktivkeller.SimpleLocalization.Unity.Difference;
 using Produktivkeller.SimpleLocalization.Unity.Extensions;
 using Produktivkeller.SimpleLocalization.Unity.Fonts;
 using Produktivkeller.SimpleLocalization.Unity.Language_Recognition;
-using Produktivkeller.SimpleLocalization.Unity.Preprocessing;
 using Produktivkeller.SimpleLogging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using Produktivkeller.SimpleLocalization.Excel;
+
+#else
+using Produktivkeller.SimpleLocalization.Unity.Preprocessing;
+#endif
 
 namespace Produktivkeller.SimpleLocalization.Unity.Core
 {
@@ -263,22 +266,6 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             Log.Warn("The following text elements are not localized:\n\n" + fullNamesWithNewLines + "\n");
         }
 
-#if UNITY_EDITOR
-
-        [ContextMenu("Generate localization difference")]
-        private void GenerateLocalizationDifference()
-        {
-            new LocalizationDifferenceGenerator().Generate();
-        }
-
-        [ContextMenu("Import latest finished localization")]
-        private void ImportLatestFinishedLocalization()
-        {
-            new FinishedLocalizationImporter().ImportLatest();
-        }
-
-#endif
-
-#endregion
+        #endregion
     }
 }
