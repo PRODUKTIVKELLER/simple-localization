@@ -2,9 +2,9 @@
     "name": "com.produktivkeller.simple-localization",
     "rootNamespace": "Produktivkeller.SimpleLocalization",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:6eb45ef36796a2546b055961165671cb",
-        "GUID:48f7e044d3f7347419fa4145ada8da69"
+        "Unity.TextMeshPro",
+        "com.produktivkeller.simple-logging",
+        "com.produktivkeller.simple-code-patterns"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
