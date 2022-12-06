@@ -165,7 +165,13 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         private List<ILocalized> FindReceivers()
         {
             List<ILocalized> interfaces      = new List<ILocalized>();
-            GameObject[]     rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            List<GameObject> rootGameObjects = new List<GameObject>();
+            
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                rootGameObjects.AddRange(SceneManager.GetSceneAt(i).GetRootGameObjects());
+            }
+            
             foreach (GameObject rootGameObject in rootGameObjects)
             {
                 ILocalized[] childInterfaces = rootGameObject.GetComponentsInChildren<ILocalized>(true);
