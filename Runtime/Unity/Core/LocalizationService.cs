@@ -246,7 +246,27 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         private void FindNonLocalizedTexts()
         {
             List<TMP_Text> nonLocalizedTexts = new List<TMP_Text>();
-            GameObject[]   rootGameObjects   = SceneManager.GetActiveScene().GetRootGameObjects();
+            
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                nonLocalizedTexts.AddRange(FindNonLocalizedTexts(SceneManager.GetSceneAt(i).GetRootGameObjects()));
+            }
+            
+            if (nonLocalizedTexts.Count <= 0)
+            {
+                Log.Debug("All text elements are localized.");
+                return;
+            }
+
+            string fullNamesWithNewLines = nonLocalizedTexts
+                                           .Select(t => t.gameObject.BuildFullName())
+                                           .Aggregate((a, b) => a + "\n" + b);
+            Log.Warn("The following text elements are not localized:\n\n" + fullNamesWithNewLines + "\n");
+        }
+
+        private static List<TMP_Text> FindNonLocalizedTexts(GameObject[] rootGameObjects)
+        {
+            List<TMP_Text> nonLocalizedTexts = new List<TMP_Text>();
 
             foreach (GameObject rootGameObject in rootGameObjects)
             {
@@ -260,16 +280,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                 }
             }
 
-            if (nonLocalizedTexts.Count <= 0)
-            {
-                Log.Debug("All text elements are localized.");
-                return;
-            }
-
-            string fullNamesWithNewLines = nonLocalizedTexts
-                                           .Select(t => t.gameObject.BuildFullName())
-                                           .Aggregate((a, b) => a + "\n" + b);
-            Log.Warn("The following text elements are not localized:\n\n" + fullNamesWithNewLines + "\n");
+            return nonLocalizedTexts;
         }
 
         #endregion
