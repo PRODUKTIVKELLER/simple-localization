@@ -12,6 +12,7 @@ using Produktivkeller.SimpleLogging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Produktivkeller.SimpleLocalization.Persistence;
 #if UNITY_EDITOR
 using Produktivkeller.SimpleLocalization.Excel;
 
@@ -31,6 +32,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
 
         private LocalizationStorage            _localizationStorage;
         private Dictionary<int, TMP_FontAsset> _defaultFontAssetsByGameObjectId;
+        private ISimpleLocalizationPersistence _simpleLocalizationPersistence;
 
         protected override void Initialize()
         {
@@ -41,6 +43,11 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             if (CurrentLanguageId == LanguageId.None)
             {
                 CurrentLanguageId = DetermineLanguageIdFromProviders();
+            }
+
+            if (_simpleLocalizationPersistence == null)
+            {
+                _simpleLocalizationPersistence = new SimpleLocalizationPersistence();
             }
 
 #if UNITY_EDITOR
@@ -55,11 +62,11 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
 
         private LanguageId LoadLanguageIdFromPlayerPrefs()
         {
-            if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
+            if (_simpleLocalizationPersistence.HasKey(PLAYER_PREF_KEY))
             {
                 try
                 {
-                    return (LanguageId)Enum.Parse(typeof(LanguageId), PlayerPrefs.GetString(PLAYER_PREF_KEY));
+                    return (LanguageId)Enum.Parse(typeof(LanguageId), _simpleLocalizationPersistence.GetString(PLAYER_PREF_KEY));
                 }
                 catch (ArgumentException)
                 {
@@ -116,8 +123,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         public void ChangeLanguage(LanguageId languageId)
         {
             CurrentLanguageId = languageId;
-            PlayerPrefs.SetString(PLAYER_PREF_KEY, languageId.ToString());
-            PlayerPrefs.Save();
+            _simpleLocalizationPersistence.SetString(PLAYER_PREF_KEY, languageId.ToString());
+            _simpleLocalizationPersistence.Save();
             InformReceivers();
         }
 
@@ -219,6 +226,11 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
             }
         }
 
+        public void UseCustomPersistence(ISimpleLocalizationPersistence simpleLocalizationPersistence)
+        {
+            _simpleLocalizationPersistence = simpleLocalizationPersistence;
+        }
+
         private TMP_FontAsset GetDefaultFontAsset(TMP_Text text)
         {
             int instanceID = text.gameObject.GetInstanceID();
@@ -236,8 +248,8 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         [ContextMenu("Delete player prefs")]
         private void DeletePlayerPrefs()
         {
-            PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
-            PlayerPrefs.Save();
+            _simpleLocalizationPersistence.DeleteKey(PLAYER_PREF_KEY);
+            _simpleLocalizationPersistence.Save();
 
             Log.Debug("Deleted 'PlayerPrefs' entry for preferred language.");
         }
