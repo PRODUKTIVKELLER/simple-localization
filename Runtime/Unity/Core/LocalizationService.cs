@@ -38,14 +38,14 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
         {
             _defaultFontAssetsByGameObjectId = new Dictionary<int, TMP_FontAsset>();
 
+            _simpleLocalizationPersistence = GetComponent<ISimpleLocalizationPersistence>() ?? new SimpleLocalizationPersistence();
+
             CurrentLanguageId = LoadLanguageIdFromPlayerPrefs();
 
             if (CurrentLanguageId == LanguageId.None)
             {
                 CurrentLanguageId = DetermineLanguageIdFromProviders();
             }
-
-            _simpleLocalizationPersistence = GetComponent<ISimpleLocalizationPersistence>() ?? new SimpleLocalizationPersistence();
 
 #if UNITY_EDITOR
             LanguageCache languageCache = LocalizationLoader.LoadConfigurationAndBuildLanguageCache();
