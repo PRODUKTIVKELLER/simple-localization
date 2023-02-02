@@ -45,10 +45,7 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                 CurrentLanguageId = DetermineLanguageIdFromProviders();
             }
 
-            if (_simpleLocalizationPersistence == null)
-            {
-                _simpleLocalizationPersistence = new SimpleLocalizationPersistence();
-            }
+            _simpleLocalizationPersistence = GetComponent<ISimpleLocalizationPersistence>() ?? new SimpleLocalizationPersistence();
 
 #if UNITY_EDITOR
             LanguageCache languageCache = LocalizationLoader.LoadConfigurationAndBuildLanguageCache();
@@ -224,11 +221,6 @@ namespace Produktivkeller.SimpleLocalization.Unity.Core
                     t2.UpdateFontAsset();
                     break;
             }
-        }
-
-        public void UseCustomPersistence(ISimpleLocalizationPersistence simpleLocalizationPersistence)
-        {
-            _simpleLocalizationPersistence = simpleLocalizationPersistence;
         }
 
         private TMP_FontAsset GetDefaultFontAsset(TMP_Text text)
