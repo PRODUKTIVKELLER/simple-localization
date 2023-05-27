@@ -9,6 +9,11 @@ namespace Produktivkeller.SimpleLocalization.Unity.Utils
     {
         public void OnLanguageHasChanged()
         {
+            if (!gameObject || !gameObject.activeInHierarchy)
+            {
+                return;
+            }
+            
             StartCoroutine(RebuildLayout());
         }
 
